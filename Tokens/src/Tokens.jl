@@ -23,7 +23,7 @@ struct IndexedToken <: Token
     I
 end
 
-IndexedToken(s,I) = IndexedToken(ScalarToken(s),I)
+IndexedToken(s::Symbol, I) = IndexedToken(ScalarToken(s),I)
 
 function Base.show(io::IO, ::MIME"text/plain", t::IndexedToken)
     print(io, t.t)
