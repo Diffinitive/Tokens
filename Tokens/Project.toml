@@ -1,0 +1,10 @@
+name = "Tokens"
+uuid = "040c2ec2-8d69-4aca-bf03-7d3a7092f2f6"
+authors = ["Jonatan Werpers <jonatan@werpers.com> and contributors"]
+version = "0.1.0"
+
+[deps]
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
+[compat]
+julia = "1.5"
