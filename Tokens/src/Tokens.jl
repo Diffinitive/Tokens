@@ -15,8 +15,7 @@ struct ScalarToken <: Token
     s::Symbol
 end
 
-Base.show(io::IO, ::MIME"text/plain", t::ScalarToken) = print(io, t)
-Base.print(io::IO, t::ScalarToken) = print(io, t.s)
+Base.show(io::IO, ::MIME"text/plain", t::ScalarToken) = print(io, t.s)
 
 struct IndexedToken <: Token
     t::Token
