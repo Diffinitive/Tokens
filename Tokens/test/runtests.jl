@@ -12,12 +12,12 @@ supplied to filter which test files are run.
 """
 function run_testfiles(args)
     if isempty(args)
-        globs = [fn"./*"]
+        globs = [fn"../*"]
     else
-        globs = Glob.FilenameMatch.("./".*args)
+        globs = Glob.FilenameMatch.("../".*args)
     end
 
-    run_testfiles(".", globs)
+    run_testfiles("..", globs)
 end
 
 function  run_testfiles(path, globs)
