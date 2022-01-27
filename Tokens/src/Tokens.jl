@@ -25,7 +25,7 @@ end
 IndexedToken(s::Symbol, I) = IndexedToken(ScalarToken(s),I)
 
 function Base.show(io::IO, ::MIME"text/plain", t::IndexedToken)
-    print(io, t.t)
+    show(io, MIME"text/plain"(), t.t)
     print(io, "[")
     join(io, t.I, ",")
     print(io, "]")
@@ -51,6 +51,8 @@ struct LinearCombination <: Token
 end
 
 LinearCombination(t::Token) = LinearCombination(Dict(t=>1))
+
+Base.:(==)(a::LinearCombination, b::LinearCombination) = all(==(p...) for p ∈ zip(a.d, b.d))
 
 function Base.show(io::IO, mime::MIME"text/plain", lc::LinearCombination)
     pairs = collect(lc.d)
@@ -110,6 +112,10 @@ Base.:-(t1::Token, t2::Token) = t1+(-t2)
 Base.:/(lc::LinearCombination, δ::Real) = LinearCombination(Dict(k=>v/δ for (k,v) in lc.d))
 
 function get_matrix(v)
+    if eltype(v) != LinearCombination
+        throw(ArgumentError("The element type must be a `LinearCombination` of `IndexedToken`"))
+    end
+
     N = length(v)
     A = spzeros(N,N)
 
@@ -125,7 +131,6 @@ end
 # TODO: add a zero token and a zero method to allow zeros(Token, N,N)
 # TODO: change get_matrix to get_array or get_sparse_array and allow higher order tensors
 # TODO: add function for getting all the tokens of an "expression".
-# TODO: Clean up printing of negative terms in LinearCombination.
-# TODO: Allow tests in src/
+# TODO: Fix broken tests.
 
 end # module

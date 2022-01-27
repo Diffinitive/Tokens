@@ -39,6 +39,9 @@ x = ScalarToken(:x)
 # ╔═╡ e63e5744-3dec-11eb-3129-d187918866da
 y = ScalarToken(:y)
 
+# ╔═╡ 668f4ccc-91dc-46fe-bf73-113a6d479055
+-x
+
 # ╔═╡ 0640b744-3ded-11eb-2009-2f0fd7b30a1c
 z = x+2*y
 
@@ -68,7 +71,7 @@ end;
 vₓ = D1(v,1)
 
 # ╔═╡ 971ae9f6-49d2-11eb-20be-59e080aec06e
-vₓ[1]
+vₓ
 
 # ╔═╡ af9facdc-49d4-11eb-2694-7b169fa80c3b
 Array(get_matrix(vₓ))
@@ -83,6 +86,7 @@ Array(get_matrix(vₓ))
 # ╠═e5d088b8-49d1-11eb-0a86-294e136b23fe
 # ╠═d7e8237a-3dec-11eb-23bd-75df6d454f9c
 # ╠═e63e5744-3dec-11eb-3129-d187918866da
+# ╠═668f4ccc-91dc-46fe-bf73-113a6d479055
 # ╠═0640b744-3ded-11eb-2009-2f0fd7b30a1c
 # ╠═a410b3b6-49c8-11eb-0d18-1d87a0d950b8
 # ╠═490a50ac-49c9-11eb-0a62-fb39771c8b84
