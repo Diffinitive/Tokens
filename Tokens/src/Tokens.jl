@@ -50,6 +50,7 @@ struct LinearCombination <: Token
     d::Dict{Token, Real}
 end
 
+LinearCombination() = LinearCombination(Dict{Token,Real}())
 LinearCombination(t::Token) = LinearCombination(Dict(t=>1))
 
 Base.:(==)(a::LinearCombination, b::LinearCombination) = all(==(p...) for p ∈ zip(a.d, b.d))
@@ -111,6 +112,9 @@ Base.:-(t1::Token, t2::Token) = t1+(-t2)
 
 Base.:/(lc::LinearCombination, δ::Real) = LinearCombination(Dict(k=>v/δ for (k,v) in lc.d))
 
+Base.zero(::Type{<:Token}) = LinearCombination()
+Base.zero(::Token) = LinearCombination()
+
 function get_matrix(v)
     if eltype(v) != LinearCombination
         throw(ArgumentError("The element type must be a `LinearCombination` of `IndexedToken`"))
@@ -128,7 +132,6 @@ function get_matrix(v)
     return A
 end
 
-# TODO: add a zero token and a zero method to allow zeros(Token, N,N)
 # TODO: change get_matrix to get_array or get_sparse_array and allow higher order tensors
 # TODO: add function for getting all the tokens of an "expression".
 # TODO: Fix broken tests.

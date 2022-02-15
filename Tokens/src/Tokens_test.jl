@@ -57,6 +57,18 @@ end
 
         @test a-a == 0a
     end
+
+    @testset "zero" begin
+        z = zero(Token)
+
+        @test z + z  == z
+        @test 1a + z == 1a
+
+        @test zero(ScalarToken) == z
+        @test zero(ScalarToken(:a)) == z
+
+        @test zeros(Token, 3) == [z,z,z]
+    end
 end
 
 @testset "get_matrix" begin
