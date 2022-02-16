@@ -32,12 +32,12 @@ function Base.show(io::IO, ::MIME"text/plain", t::IndexedToken)
     print(io, "]")
 end
 
-struct ArrayToken{D} <: AbstractArray{Token,D}
-    s::Token
+struct ArrayToken{T<:Token, D} <: AbstractArray{T,D}
+    s::T
     size::NTuple{D,Int}
 end
 
-ArrayToken(s, sz...) = ArrayToken{length(sz)}(ScalarToken(s), sz)
+ArrayToken(s, sz...) = ArrayToken(ScalarToken(s), sz)
 
 Base.size(a::ArrayToken) = a.size
 
@@ -48,11 +48,13 @@ function Base.getindex(a::ArrayToken, I...)
 end
 
 # For when when someone (show(::AbstractArray)) indexes a vector with two indecies.
-function Base.getindex(a::ArrayToken{1}, i,j)
+function Base.getindex(a::ArrayToken{T,1} where T, i,j)
     checkbounds(a, i, j)
 
     return IndexedToken(a.s, i)
 end
+
+Base.similar(v::ArrayToken) = Base.similar(v, LinearCombination)
 
 struct LinearCombination <: Token
     d::Dict{Token, Real}

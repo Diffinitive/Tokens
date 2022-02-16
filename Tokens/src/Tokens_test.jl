@@ -14,12 +14,17 @@ end
 
 @testset "ArrayToken" begin
     A = ArrayToken(:A, 3, 3)
-    @test A isa AbstractArray{Token}
+    @test A isa AbstractArray{ScalarToken, 2}
     @test size(A) == (3, 3)
 
     @test A[1,2] isa Token
     @test repr("text/plain", A[1,2]) == "A[1,2]"
     @test repr("text/plain", A[3,3]) == "A[3,3]"
+
+    @testset "type stability" begin
+        v = ArrayToken(:v, 10)
+        @inferred v[1]
+    end
 end
 
 @testset "IndexedToken" begin
