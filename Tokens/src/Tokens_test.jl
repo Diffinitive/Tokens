@@ -14,7 +14,7 @@ end
 
 @testset "ArrayToken" begin
     A = ArrayToken(:A, 3, 3)
-    @test A isa AbstractArray{ScalarToken, 2}
+    @test A isa AbstractArray{IndexedToken{ScalarToken,2}, 2}
     @test size(A) == (3, 3)
 
     @test A[1,2] isa Token
@@ -80,6 +80,12 @@ end
         @test zero(ScalarToken(:a)) == z
 
         @test zeros(Token, 3) == [z,z,z]
+    end
+
+    @testset "type stability" begin
+        a = ScalarToken(:a)
+        l = 1a
+        @inferred l.d[a]
     end
 end
 

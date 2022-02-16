@@ -32,7 +32,7 @@ function Base.show(io::IO, ::MIME"text/plain", t::IndexedToken)
     print(io, "]")
 end
 
-struct ArrayToken{T<:Token, D} <: AbstractArray{T,D}
+struct ArrayToken{T<:Token, D} <: AbstractArray{IndexedToken{T,D},D}
     s::T
     size::NTuple{D,Int}
 end
@@ -54,10 +54,10 @@ function Base.getindex(a::ArrayToken{T,1} where T, i,j)
     return IndexedToken(a.s, i)
 end
 
-Base.similar(v::ArrayToken) = Base.similar(v, LinearCombination)
+Base.similar(v::ArrayToken) = Base.similar(v, LinearCombination{eltype(v),Float64})
 
-struct LinearCombination <: Token
-    d::Dict{Token, Real}
+struct LinearCombination{T<:Token,S<:Number} <: Token
+    d::Dict{T,S}
 end
 
 LinearCombination() = LinearCombination(Dict{Token,Real}())
@@ -130,8 +130,6 @@ Base.zero(::Type{<:Token}) = LinearCombination()
 Base.zero(::Token) = LinearCombination()
 
 function get_matrix(v)
-    v = Vector{LinearCombination}(v)
-
     I = Int[]
     J = Int[]
     V = Float64[]
