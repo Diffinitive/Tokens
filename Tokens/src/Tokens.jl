@@ -118,16 +118,19 @@ Base.zero(::Token) = LinearCombination()
 function get_matrix(v)
     v = Vector{LinearCombination}(v)
 
-    N = length(v)
-    A = spzeros(N,N)
+    I = Int[]
+    J = Int[]
+    V = Float64[]
 
     for i ∈ eachindex(v)
         for (e,λ) ∈ v[i].d
-            A[i, e.I[1]] = λ
+            push!(I, i)
+            push!(J, e.I[1])
+            push!(V, λ)
         end
     end
 
-    return A
+    return sparse(I,J,V)
 end
 
 # TODO: change get_matrix to get_array or get_sparse_array and allow higher order tensors
