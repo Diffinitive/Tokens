@@ -63,6 +63,10 @@ LinearCombination(t::Token) = LinearCombination(Dict(t=>1))
 Base.:(==)(a::LinearCombination, b::LinearCombination) = all(==(p...) for p ∈ zip(a.d, b.d))
 
 function Base.show(io::IO, mime::MIME"text/plain", lc::LinearCombination)
+    if isempty(lc.d)
+        print(io, "0")
+        return
+    end
     pairs = collect(lc.d)
     sort!(pairs, by=p->string(p[1]))
 

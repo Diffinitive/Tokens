@@ -27,6 +27,8 @@ end
     b = ScalarToken(:b)
     c = ScalarToken(:c)
 
+    @test repr("text/plain", Tokens.LinearCombination()) == "0"
+
     @test a + b isa Tokens.LinearCombination
     @test repr("text/plain", a+b) == "a + b"
     @test repr("text/plain", b+a) == "a + b"
