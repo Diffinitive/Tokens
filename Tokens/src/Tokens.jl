@@ -148,5 +148,7 @@ end
 # TODO: change get_matrix to get_array or get_sparse_array and allow higher order tensors
 # TODO: add function for getting all the tokens of an "expression".
 # TODO: Fix broken tests.
+# TODO: Add wrapperfunction that takes a function and a size and gives the matrix
+# TODO: Support LinearMaps
 
 end # module
