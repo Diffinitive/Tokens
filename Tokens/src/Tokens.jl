@@ -46,6 +46,13 @@ function Base.getindex(a::ArrayToken, I...)
     return IndexedToken(a.s, I)
 end
 
+# For when when someone (show(::AbstractArray)) indexes a vector with two indecies.
+function Base.getindex(a::ArrayToken{1}, i,j)
+    checkbounds(a, i, j)
+
+    return IndexedToken(a.s, i)
+end
+
 struct LinearCombination <: Token
     d::Dict{Token, Real}
 end
