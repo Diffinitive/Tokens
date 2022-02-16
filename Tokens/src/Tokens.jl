@@ -116,9 +116,7 @@ Base.zero(::Type{<:Token}) = LinearCombination()
 Base.zero(::Token) = LinearCombination()
 
 function get_matrix(v)
-    if eltype(v) != LinearCombination
-        throw(ArgumentError("The element type must be a `LinearCombination` of `IndexedToken`"))
-    end
+    v = Vector{LinearCombination}(v)
 
     N = length(v)
     A = spzeros(N,N)

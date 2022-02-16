@@ -74,8 +74,6 @@ end
 @testset "get_matrix" begin
     @test get_matrix(Tokens.LinearCombination[]) == spzeros(0,0)
 
-    @test_throws ArgumentError("The element type must be a `LinearCombination` of `IndexedToken`") get_matrix([ScalarToken(:a)])
-
     @test get_matrix([1IndexedToken(:v,1)]) == sparse(ones(1,1))
     @test get_matrix([2IndexedToken(:v,1)]) == sparse(2ones(1,1))
 
@@ -97,4 +95,33 @@ end
          0 1;
         -1 0;
     ])
+
+
+    @testset "Example function" begin
+        function D1(v, h)
+            N = length(v)
+            vₓ = similar(v)
+
+            vₓ[1] = (v[2] - v[1])/h
+
+            for i ∈ 2:N-1
+                vₓ[i] = (v[i+1] - v[i-1])/2h
+            end
+
+            vₓ[N] = (v[N] - v[N-1])/h
+
+            return vₓ
+        end
+
+        v = ArrayToken(:v, 4)
+        vₓ = D1(v,1)
+
+        @test Array(get_matrix(vₓ)) == [
+              -1    1   0   0;
+            -1/2    0 1/2   0;
+               0 -1/2   0 1/2;
+               0    0  -1   1;
+        ]
+    end
+
 end
