@@ -56,6 +56,12 @@ git-tree-sha1 = "aebf55e6d7795e02ca500a689d326ac979aaf89e"
 uuid = "9718e550-a3fa-408a-8086-8db961cd8217"
 version = "0.1.1"
 
+[[deps.BenchmarkTools]]
+deps = ["JSON", "Logging", "Printf", "Profile", "Statistics", "UUIDs"]
+git-tree-sha1 = "4c10eee4af024676200bc7752e536f858c6b8f93"
+uuid = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+version = "1.3.1"
+
 [[deps.Bijections]]
 git-tree-sha1 = "705e7822597b432ebe152baa844b49f8026df090"
 uuid = "e2ed5e7c-b2de-5872-ae92-c73ca462fb04"
@@ -286,6 +292,12 @@ git-tree-sha1 = "4da0f88e9a39111c2fa3add390ab15f3a44f3ca3"
 uuid = "22cec73e-a1b8-11e9-2c92-598750a2cf9c"
 version = "0.3.1"
 
+[[deps.InlineStrings]]
+deps = ["Parsers"]
+git-tree-sha1 = "61feba885fac3a407465726d0c330b3055df897f"
+uuid = "842dd82b-1e85-43dc-bf29-5d0ee9dffc48"
+version = "1.1.2"
+
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
@@ -295,6 +307,12 @@ deps = ["Dates", "EllipsisNotation", "Statistics"]
 git-tree-sha1 = "3cc368af3f110a767ac786560045dceddfc16758"
 uuid = "8197267c-284f-5f27-9208-e0e47529a953"
 version = "0.5.3"
+
+[[deps.Intervals]]
+deps = ["Dates", "Printf", "RecipesBase", "Serialization", "TimeZones"]
+git-tree-sha1 = "323a38ed1952d30586d0fe03412cde9399d3618b"
+uuid = "d8418881-c3e1-53bb-8760-2df7ec849ed5"
+version = "1.5.0"
 
 [[deps.InverseFunctions]]
 deps = ["Test"]
@@ -347,6 +365,10 @@ git-tree-sha1 = "a8f4f279b6fa3c3c4f1adadd78a621b13a506bce"
 uuid = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
 version = "0.15.9"
 
+[[deps.LazyArtifacts]]
+deps = ["Artifacts", "Pkg"]
+uuid = "4af54fe1-eca0-43a8-85a7-787d91b784e3"
+
 [[deps.LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
 uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
@@ -369,6 +391,12 @@ uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 [[deps.LinearAlgebra]]
 deps = ["Libdl", "libblastrampoline_jll"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
+[[deps.LinearMaps]]
+deps = ["LinearAlgebra", "SparseArrays"]
+git-tree-sha1 = "dbb14c604fc47aa4f2e19d0ebb7b6416f3cfa5f5"
+uuid = "7a12625a-238d-50fd-b39a-03d52299707e"
+version = "3.5.1"
 
 [[deps.LogExpFunctions]]
 deps = ["ChainRulesCore", "ChangesOfVariables", "DocStringExtensions", "InverseFunctions", "IrrationalConstants", "LinearAlgebra"]
@@ -425,6 +453,12 @@ version = "1.0.2"
 
 [[deps.Mmap]]
 uuid = "a63ad114-7e13-5084-954f-fe012c677804"
+
+[[deps.Mocking]]
+deps = ["Compat", "ExprTools"]
+git-tree-sha1 = "29714d0a7a8083bba8427a4fbfb00a540c681ce7"
+uuid = "78c3b35d-d492-501b-9361-3d52fe80e533"
+version = "0.7.3"
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
@@ -508,6 +542,12 @@ git-tree-sha1 = "ae6145ca68947569058866e443df69587acc1806"
 uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 version = "0.7.32"
 
+[[deps.Polynomials]]
+deps = ["Intervals", "LinearAlgebra", "MutableArithmetics", "RecipesBase"]
+git-tree-sha1 = "f184bc53e9add8c737e50fa82885bc3f7d70f628"
+uuid = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
+version = "2.0.24"
+
 [[deps.Preferences]]
 deps = ["TOML"]
 git-tree-sha1 = "2cf929d64681236a2e074ffafb8d568733d2e6af"
@@ -517,6 +557,10 @@ version = "1.2.3"
 [[deps.Printf]]
 deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+
+[[deps.Profile]]
+deps = ["Printf"]
+uuid = "9abbd945-dff8-562f-b5e8-e1ebf5ef1b79"
 
 [[deps.QuadGK]]
 deps = ["DataStructures", "LinearAlgebra"]
@@ -714,6 +758,12 @@ deps = ["ArgCheck", "BangBang", "ConstructionBase", "InitialValues", "MicroColle
 git-tree-sha1 = "6dad289fe5fc1d8e907fa855135f85fb03c8fa7a"
 uuid = "ac1d9e8a-700a-412c-b207-f0111f4b6c0d"
 version = "0.1.9"
+
+[[deps.TimeZones]]
+deps = ["Dates", "Downloads", "InlineStrings", "LazyArtifacts", "Mocking", "Printf", "RecipesBase", "Serialization", "Unicode"]
+git-tree-sha1 = "0f1017f68dc25f1a0cb99f4988f78fe4f2e7955f"
+uuid = "f269a46b-ccf7-5d73-abea-4c690281aa53"
+version = "1.7.1"
 
 [[deps.TimerOutputs]]
 deps = ["ExprTools", "Printf"]

@@ -70,11 +70,8 @@ end;
 # ╔═╡ 6a40dd18-49c9-11eb-22f7-63445b566318
 vₓ = D1(v,1)
 
-# ╔═╡ 971ae9f6-49d2-11eb-20be-59e080aec06e
-vₓ
-
-# ╔═╡ af9facdc-49d4-11eb-2694-7b169fa80c3b
-Array(get_matrix(vₓ))
+# ╔═╡ ec1fefcb-b27e-484e-b4c3-53d62110df10
+get_matrix(vₓ)
 
 # ╔═╡ Cell order:
 # ╠═c9fe44ec-49d4-11eb-023a-2d887e9efdc5
@@ -91,6 +88,5 @@ Array(get_matrix(vₓ))
 # ╠═a410b3b6-49c8-11eb-0d18-1d87a0d950b8
 # ╠═490a50ac-49c9-11eb-0a62-fb39771c8b84
 # ╠═6a40dd18-49c9-11eb-22f7-63445b566318
-# ╠═971ae9f6-49d2-11eb-20be-59e080aec06e
-# ╠═af9facdc-49d4-11eb-2694-7b169fa80c3b
+# ╠═ec1fefcb-b27e-484e-b4c3-53d62110df10
 # ╠═bf841c82-49c8-11eb-14a9-69253453f68f
