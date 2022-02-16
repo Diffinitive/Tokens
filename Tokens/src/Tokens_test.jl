@@ -22,6 +22,11 @@ end
     @test repr("text/plain", A[3,3]) == "A[3,3]"
 end
 
+@testset "IndexedToken" begin
+    @test IndexedToken(:v, 1) isa IndexedToken{ScalarToken, 1}
+    @test IndexedToken(:v, 1,2) isa IndexedToken{ScalarToken, 2}
+end
+
 @testset "LinearCombination" begin
     a = ScalarToken(:a)
     b = ScalarToken(:b)

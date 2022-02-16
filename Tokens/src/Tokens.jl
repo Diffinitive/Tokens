@@ -17,12 +17,13 @@ end
 
 Base.show(io::IO, ::MIME"text/plain", t::ScalarToken) = print(io, t.s)
 
-struct IndexedToken <: Token
-    t::Token
-    I
+struct IndexedToken{T<:Token,D} <: Token
+    t::T
+    I::NTuple{D,Int}
 end
 
-IndexedToken(s::Symbol, I) = IndexedToken(ScalarToken(s),I)
+IndexedToken(t::Token, I...) = IndexedToken{typeof(t),length(I)}(t,I)
+IndexedToken(s::Symbol, I...) = IndexedToken(ScalarToken(s),I...)
 
 function Base.show(io::IO, ::MIME"text/plain", t::IndexedToken)
     show(io, MIME"text/plain"(), t.t)
@@ -43,7 +44,7 @@ Base.size(a::ArrayToken) = a.size
 function Base.getindex(a::ArrayToken, I...)
     checkbounds(a, I...)
 
-    return IndexedToken(a.s, I)
+    return IndexedToken(a.s, I...)
 end
 
 # For when when someone (show(::AbstractArray)) indexes a vector with two indecies.
