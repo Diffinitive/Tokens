@@ -20,7 +20,7 @@ v = ArrayToken(:v, 4000);
 vₓ = D1(v,1)
 
 res_func_application = @benchmark D1($v)
-res_matrix_conversion = @benchmark get_matrix($vₓ)
+res_matrix_conversion = @benchmark to_matrix($vₓ)
 
 println()
 println("Function application:")

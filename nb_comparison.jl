@@ -69,9 +69,9 @@ begin
 	Ns_tok = 2:10:8000
 	runtimes_tok = zeros(length(Ns_tok))
 
-	get_matrix(D1(ArrayToken(:v, Ns_tok[1]),1)) # Compilation
+	to_matrix(D1(ArrayToken(:v, Ns_tok[1]),1)) # Compilation
 	for i ∈ eachindex(Ns_tok)
-		runtimes_tok[i] = @elapsed get_matrix(D1(ArrayToken(:v, Ns_tok[i]),1))
+		runtimes_tok[i] = @elapsed to_matrix(D1(ArrayToken(:v, Ns_tok[i]),1))
 	end
 end
 

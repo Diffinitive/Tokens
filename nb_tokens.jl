@@ -71,7 +71,7 @@ end;
 vₓ = D1(v,1)
 
 # ╔═╡ ec1fefcb-b27e-484e-b4c3-53d62110df10
-get_matrix(vₓ)
+to_matrix(vₓ)
 
 # ╔═╡ Cell order:
 # ╠═c9fe44ec-49d4-11eb-023a-2d887e9efdc5

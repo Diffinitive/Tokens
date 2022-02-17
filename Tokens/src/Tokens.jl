@@ -7,7 +7,7 @@ export ScalarToken
 export ArrayToken
 export IndexedToken
 
-export get_matrix
+export to_matrix
 
 abstract type Token end
 
@@ -129,7 +129,7 @@ Base.:/(lc::LinearCombination, δ::Real) = LinearCombination(Dict(k=>v/δ for (k
 Base.zero(::Type{<:Token}) = LinearCombination()
 Base.zero(::Token) = LinearCombination()
 
-function get_matrix(v::AbstractArray{<:Token})
+function to_matrix(v::AbstractArray{<:Token})
     I = Int[]
     J = Int[]
     V = Float64[]
@@ -145,14 +145,13 @@ function get_matrix(v::AbstractArray{<:Token})
     return sparse(I,J,V)
 end
 
-function get_matrix(f, sz...)
+function to_matrix(f, sz...)
     v = ArrayToken(:v,sz...)
     w = f(v)
-    return get_matrix(w)
+    return to_matrix(w)
 end
 
-# TODO: change get_matrix to get_array or get_sparse_array and allow higher order tensors
-# TODO: Rename get_matrix to to_matrix
+# TODO: change to_matrix to get_array or get_sparse_array and allow higher order tensors
 # TODO: Add documentation
 # TODO: add function for getting all the tokens of an "expression".
 # TODO: Fix broken tests.

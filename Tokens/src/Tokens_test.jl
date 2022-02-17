@@ -89,27 +89,27 @@ end
     end
 end
 
-@testset "get_matrix" begin
+@testset "to_matrix" begin
     @testset "vector of linear combinations" begin
-        @test get_matrix(Tokens.LinearCombination[]) == spzeros(0,0)
+        @test to_matrix(Tokens.LinearCombination[]) == spzeros(0,0)
 
-        @test get_matrix([1IndexedToken(:v,1)]) == sparse(ones(1,1))
-        @test get_matrix([2IndexedToken(:v,1)]) == sparse(2ones(1,1))
+        @test to_matrix([1IndexedToken(:v,1)]) == sparse(ones(1,1))
+        @test to_matrix([2IndexedToken(:v,1)]) == sparse(2ones(1,1))
 
         v = ArrayToken(:v, 2)
-        @test get_matrix([v[1]+2v[2], -v[2]]) == sparse([
+        @test to_matrix([v[1]+2v[2], -v[2]]) == sparse([
             1 2;
             0 -1;
         ])
 
         v = ArrayToken(:v, 3)
-        @test get_matrix([v[1]+v[2], v[2]+v[3]]) == sparse([
+        @test to_matrix([v[1]+v[2], v[2]+v[3]]) == sparse([
             1 1 0;
             0 1 1;
         ])
 
         v = ArrayToken(:v, 2)
-        @test_broken get_matrix([v[1]+v[2], v[2], -v[1]]) == sparse([
+        @test_broken to_matrix([v[1]+v[2], v[2], -v[1]]) == sparse([
              1 1;
              0 1;
             -1 0;
@@ -132,7 +132,7 @@ end
     end
 
     @testset "function" begin
-        @test Array(get_matrix(example_function,4)) == [
+        @test Array(to_matrix(example_function,4)) == [
               -1    1   0   0;
             -1/2    0 1/2   0;
                0 -1/2   0 1/2;
