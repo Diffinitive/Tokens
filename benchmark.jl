@@ -1,7 +1,7 @@
 using BenchmarkTools
 using Tokens
 
-function D1(v, h)
+function D1(v, h=1)
     N = length(v)
     vₓ = similar(v)
 
@@ -19,8 +19,12 @@ end
 v = ArrayToken(:v, 4000);
 vₓ = D1(v,1)
 
-bd1 = @benchmark D1($v,1)
-bget_matrix = @benchmark get_matrix($vₓ)
+res_func_application = @benchmark D1($v)
+res_matrix_conversion = @benchmark get_matrix($vₓ)
 
-display(bd1)
-display(bget_matrix)
+println()
+println("Function application:")
+display(res_func_application)
+println()
+println("Matrix conversion:")
+display(res_matrix_conversion)
