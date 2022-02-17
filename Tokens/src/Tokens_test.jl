@@ -90,58 +90,54 @@ end
 end
 
 @testset "get_matrix" begin
-    @test get_matrix(Tokens.LinearCombination[]) == spzeros(0,0)
+    @testset "vector of linear combinations" begin
+        @test get_matrix(Tokens.LinearCombination[]) == spzeros(0,0)
 
-    @test get_matrix([1IndexedToken(:v,1)]) == sparse(ones(1,1))
-    @test get_matrix([2IndexedToken(:v,1)]) == sparse(2ones(1,1))
+        @test get_matrix([1IndexedToken(:v,1)]) == sparse(ones(1,1))
+        @test get_matrix([2IndexedToken(:v,1)]) == sparse(2ones(1,1))
 
-    v = ArrayToken(:v, 2)
-    @test get_matrix([v[1]+2v[2], -v[2]]) == sparse([
-        1 2;
-        0 -1;
-    ])
+        v = ArrayToken(:v, 2)
+        @test get_matrix([v[1]+2v[2], -v[2]]) == sparse([
+            1 2;
+            0 -1;
+        ])
 
-    v = ArrayToken(:v, 3)
-    @test get_matrix([v[1]+v[2], v[2]+v[3]]) == sparse([
-        1 1 0;
-        0 1 1;
-    ])
+        v = ArrayToken(:v, 3)
+        @test get_matrix([v[1]+v[2], v[2]+v[3]]) == sparse([
+            1 1 0;
+            0 1 1;
+        ])
 
-    v = ArrayToken(:v, 2)
-    @test_broken get_matrix([v[1]+v[2], v[2], -v[1]]) == sparse([
-         1 1;
-         0 1;
-        -1 0;
-    ])
+        v = ArrayToken(:v, 2)
+        @test_broken get_matrix([v[1]+v[2], v[2], -v[1]]) == sparse([
+             1 1;
+             0 1;
+            -1 0;
+        ])
+    end
 
+    function example_function(v, h=1)
+        N = length(v)
+        vₓ = similar(v)
 
-    @testset "Example function" begin
-        function D1(v, h)
-            N = length(v)
-            vₓ = similar(v)
+        vₓ[1] = (v[2] - v[1])/h
 
-            vₓ[1] = (v[2] - v[1])/h
-
-            for i ∈ 2:N-1
-                vₓ[i] = (v[i+1] - v[i-1])/2h
-            end
-
-            vₓ[N] = (v[N] - v[N-1])/h
-
-            return vₓ
+        for i ∈ 2:N-1
+            vₓ[i] = (v[i+1] - v[i-1])/2h
         end
 
-        v = ArrayToken(:v, 4)
-        vₓ = D1(v,1)
+        vₓ[N] = (v[N] - v[N-1])/h
 
-        @test Array(get_matrix(vₓ)) == [
+        return vₓ
+    end
+
+    @testset "function" begin
+        @test Array(get_matrix(example_function,4)) == [
               -1    1   0   0;
             -1/2    0 1/2   0;
                0 -1/2   0 1/2;
                0    0  -1   1;
         ]
 
-        @inferred get_matrix(vₓ)
     end
-
 end
