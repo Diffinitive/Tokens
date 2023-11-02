@@ -158,5 +158,6 @@ end
 # TODO: Add wrapperfunction that takes a function and a size and gives the matrix
 # TODO: Support LinearMaps
 # TODO: Find a good package name
+# TODO: Refactor so that the size is always given when asking for a matrix. (And the token arrays are hidden?)
 
 end # module

@@ -114,6 +114,27 @@ end
              0 1;
             -1 0;
         ])
+
+        v = ArrayToken(:v, 3)
+        @test_broken to_matrix([v[1], v[2], v[3]]) == sparse([
+            1 0 0;
+            0 1 0;
+            0 0 1;
+        ])
+
+        v = ArrayToken(:v, 3)
+        @test_broken to_matrix([zero(Token), v[2], zero(Token)]) == sparse([
+            0 0 0;
+            0 1 0;
+            0 0 0;
+        ])
+
+        v = ArrayToken(:v, 3)
+        @test_broken to_matrix([zero(Token), v[2]+v[1], zero(Token)]) == sparse([
+            0 0 0;
+            0 1 0;
+            0 0 0;
+        ])
     end
 
     function example_function(v, h=1)
