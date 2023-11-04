@@ -91,48 +91,48 @@ end
 
 @testset "to_matrix" begin
     @testset "vector of linear combinations" begin
-        @test to_matrix(Tokens.LinearCombination[]) == spzeros(0,0)
+        @test to_matrix(Tokens.LinearCombination[], 0, 0) == spzeros(0,0)
 
-        @test to_matrix([1IndexedToken(:v,1)]) == sparse(ones(1,1))
-        @test to_matrix([2IndexedToken(:v,1)]) == sparse(2ones(1,1))
+        @test to_matrix([1IndexedToken(:v,1)], 1, 1) == sparse(ones(1,1))
+        @test to_matrix([2IndexedToken(:v,1)], 1, 1) == sparse(2ones(1,1))
 
         v = ArrayToken(:v, 2)
-        @test to_matrix([v[1]+2v[2], -v[2]]) == sparse([
+        @test to_matrix([v[1]+2v[2], -v[2]], 2, 2) == sparse([
             1 2;
             0 -1;
         ])
 
         v = ArrayToken(:v, 3)
-        @test to_matrix([v[1]+v[2], v[2]+v[3]]) == sparse([
+        @test to_matrix([v[1]+v[2], v[2]+v[3]], 2, 3) == sparse([
             1 1 0;
             0 1 1;
         ])
 
         v = ArrayToken(:v, 2)
-        @test_broken to_matrix([v[1]+v[2], v[2], -v[1]]) == sparse([
+        @test_broken to_matrix([v[1]+v[2], v[2], -v[1]], 3, 2) == sparse([
              1 1;
              0 1;
             -1 0;
         ])
 
         v = ArrayToken(:v, 3)
-        @test_broken to_matrix([v[1], v[2], v[3]]) == sparse([
+        @test_broken to_matrix([v[1], v[2], v[3]], 3, 3) == sparse([
             1 0 0;
             0 1 0;
             0 0 1;
         ])
 
         v = ArrayToken(:v, 3)
-        @test_broken to_matrix([zero(Token), v[2], zero(Token)]) == sparse([
+        @test_broken to_matrix([zero(Token), v[2], zero(Token)], 3, 3) == sparse([
             0 0 0;
             0 1 0;
             0 0 0;
         ])
 
         v = ArrayToken(:v, 3)
-        @test_broken to_matrix([zero(Token), v[2]+v[1], zero(Token)]) == sparse([
+        @test to_matrix([zero(Token), v[2]+v[1], zero(Token)], 3, 3) == sparse([
             0 0 0;
-            0 1 0;
+            1 1 0;
             0 0 0;
         ])
     end
@@ -153,7 +153,7 @@ end
     end
 
     @testset "function" begin
-        @test Array(to_matrix(example_function,4)) == [
+        @test Array(to_matrix(example_function,4, 4)) == [
               -1    1   0   0;
             -1/2    0 1/2   0;
                0 -1/2   0 1/2;
