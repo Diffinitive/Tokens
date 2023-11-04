@@ -129,7 +129,14 @@ Base.:/(lc::LinearCombination, δ::Real) = LinearCombination(Dict(k=>v/δ for (k
 Base.zero(::Type{<:Token}) = LinearCombination()
 Base.zero(::Token) = LinearCombination()
 
-function to_matrix(v::AbstractArray{<:Token})
+function to_matrix(f, n, m)
+    v = ArrayToken(:v, m)
+    w = f(v)
+    return _to_matrix(w, n, m)
+end
+
+# To simplify writing of tests
+function _to_matrix(v::AbstractArray{<:Token}, n, m)
     I = Int[]
     J = Int[]
     V = Float64[]
@@ -142,13 +149,7 @@ function to_matrix(v::AbstractArray{<:Token})
         end
     end
 
-    return sparse(I,J,V)
-end
-
-function to_matrix(f, sz...)
-    v = ArrayToken(:v,sz...)
-    w = f(v)
-    return to_matrix(w)
+    return sparse(I, J, V, n, m)
 end
 
 # TODO: change to_matrix to get_array or get_sparse_array and allow higher order tensors
