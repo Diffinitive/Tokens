@@ -83,16 +83,37 @@ let
 	p_tok = fit(Ns_tok,runtimes_tok, 1)
 	
 	plot(;
-		legend=false,
+		title="Matrix fetch time comparison",
 		xlabel="N",
 		ylabel="t [s]",
+		minorgrid=true,
 	)
 
-	plot!(Ns_lm,runtimes_lm)
-	plot!(Ns_lm,p_lm.(Ns_lm))
+	scatter!(Ns_lm, runtimes_lm,
+		label="LinearMaps",
+		markerstrokecolor=1,
+		markercolor = 1,
+		markersize=1,
+	)
+	plot!(Ns_lm,p_lm.(Ns_lm);
+		label="P₂",
+		linestyle=:dash,
+		linewidth=3,
+		color=1,
+	)
 
-	plot!(Ns_tok,runtimes_tok)
-	plot!(Ns_tok,p_tok.(Ns_tok))
+	scatter!(Ns_tok,runtimes_tok;
+		label="Tokens",
+		markerstrokecolor = 2,
+		markercolor = 2,
+		markersize=1,
+	)
+	plot!(Ns_tok,p_tok.(Ns_tok);
+		label="P₁",
+		linestyle=:dash,
+		linewidth=3,
+		color=2,
+	)
 end
 
 # ╔═╡ Cell order:
