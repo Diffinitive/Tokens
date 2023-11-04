@@ -64,11 +64,11 @@ md"""
 # ╔═╡ a80056a5-641b-4857-813d-76429e3a7b9c
 begin
 	Ns_tok = 2:10:8000
-
-	to_matrix(D1(ArrayToken(:v, Ns_tok[1]),1)) # Compilation
+	
+	to_matrix(v->D1(v,1),2,2) # Compilation
 
 	runtimes_tok = map(Ns_tok) do n
-		@elapsed to_matrix(D1(ArrayToken(:v, n),1))
+		@elapsed to_matrix(v->D1(v,1),n,n)
 	end
 end;
 
