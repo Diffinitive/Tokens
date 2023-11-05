@@ -7,6 +7,8 @@ export ScalarToken
 export ArrayToken
 export IndexedToken
 
+export terms
+
 export to_matrix
 
 abstract type Token end
@@ -14,6 +16,8 @@ abstract type Token end
 struct ScalarToken <: Token
     s::Symbol
 end
+
+terms(t::ScalarToken) = (t=>1,)
 
 Base.show(io::IO, ::MIME"text/plain", t::ScalarToken) = print(io, t.s)
 
@@ -24,6 +28,8 @@ end
 
 IndexedToken(t::Token, I...) = IndexedToken{typeof(t),length(I)}(t,I)
 IndexedToken(s::Symbol, I...) = IndexedToken(ScalarToken(s),I...)
+
+terms(t::IndexedToken) = (t=>1,)
 
 function Base.show(io::IO, ::MIME"text/plain", t::IndexedToken)
     show(io, MIME"text/plain"(), t.t)
@@ -62,6 +68,8 @@ end
 
 LinearCombination() = LinearCombination(Dict{Token,Real}())
 LinearCombination(t::Token) = LinearCombination(Dict(t=>1))
+
+terms(t::LinearCombination) = t.d
 
 Base.:(==)(a::LinearCombination, b::LinearCombination) = all(==(p...) for p ∈ zip(a.d, b.d))
 
@@ -142,7 +150,7 @@ function _to_matrix(v::AbstractArray{<:Token}, n, m)
     V = Float64[]
 
     for i ∈ eachindex(v)
-        for (e,λ) ∈ v[i].d
+        for (e,λ) ∈ terms(v[i])
             push!(I, i)
             push!(J, e.I[1])
             push!(V, λ)

@@ -11,6 +11,11 @@ using SparseArrays
 
     @test ScalarToken(:a) == ScalarToken(:a)
     @test ScalarToken(:b) != ScalarToken(:a)
+
+    @testset "terms" begin
+        @test terms(ScalarToken(:a)) == (ScalarToken(:a)=>1,)
+        @test terms(ScalarToken(:b)) == (ScalarToken(:b)=>1,)
+    end
 end
 
 @testset "ArrayToken" begin
@@ -31,6 +36,11 @@ end
 @testset "IndexedToken" begin
     @test IndexedToken(:v, 1) isa IndexedToken{ScalarToken, 1}
     @test IndexedToken(:v, 1,2) isa IndexedToken{ScalarToken, 2}
+
+    @testset "terms" begin
+        @test terms(IndexedToken(:v, 1)) == (IndexedToken(:v, 1)=>1,)
+        @test terms(IndexedToken(:w, 2,1)) == (IndexedToken(:w, 2, 1)=>1,)
+    end
 end
 
 @testset "LinearCombination" begin
@@ -83,6 +93,12 @@ end
         @test zeros(Token, 3) == [z,z,z]
     end
 
+    @testset "terms" begin
+        @test issetequal(terms(2a), [a=>2])
+        @test issetequal(terms(a+b), [a=>1, b=>1])
+        @test issetequal(terms(a+2b+3c), [a=>1, b=>2, c=>3])
+    end
+
     @testset "type stability" begin
         a = ScalarToken(:a)
         l = 1a
@@ -110,21 +126,21 @@ end
         ])
 
         v = ArrayToken(:v, 2)
-        @test_broken _to_matrix([v[1]+v[2], v[2], -v[1]], 3, 2) == sparse([
+        @test _to_matrix([v[1]+v[2], v[2], -v[1]], 3, 2) == sparse([
              1 1;
              0 1;
             -1 0;
         ])
 
         v = ArrayToken(:v, 3)
-        @test_broken _to_matrix([v[1], v[2], v[3]], 3, 3) == sparse([
+        @test _to_matrix([v[1], v[2], v[3]], 3, 3) == sparse([
             1 0 0;
             0 1 0;
             0 0 1;
         ])
 
         v = ArrayToken(:v, 3)
-        @test_broken _to_matrix([zero(Token), v[2], zero(Token)], 3, 3) == sparse([
+        @test _to_matrix([zero(Token), v[2], zero(Token)], 3, 3) == sparse([
             0 0 0;
             0 1 0;
             0 0 0;
