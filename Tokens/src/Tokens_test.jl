@@ -37,6 +37,11 @@ end
     @test IndexedToken(:v, 1) isa IndexedToken{ScalarToken, 1}
     @test IndexedToken(:v, 1,2) isa IndexedToken{ScalarToken, 2}
 
+    @testset "index" begin
+        @test index(IndexedToken(:v, 1)) == (1,)
+        @test index(IndexedToken(:w, 2,1)) == (2,1)
+    end
+
     @testset "terms" begin
         @test terms(IndexedToken(:v, 1)) == (IndexedToken(:v, 1)=>1,)
         @test terms(IndexedToken(:w, 2,1)) == (IndexedToken(:w, 2, 1)=>1,)

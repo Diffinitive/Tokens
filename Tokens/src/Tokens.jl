@@ -8,6 +8,7 @@ export ArrayToken
 export IndexedToken
 
 export terms
+export index
 
 export to_matrix
 
@@ -29,6 +30,7 @@ end
 IndexedToken(t::Token, I...) = IndexedToken{typeof(t),length(I)}(t,I)
 IndexedToken(s::Symbol, I...) = IndexedToken(ScalarToken(s),I...)
 
+index(t::IndexedToken) = t.I
 terms(t::IndexedToken) = (t=>1,)
 
 function Base.show(io::IO, ::MIME"text/plain", t::IndexedToken)
@@ -152,7 +154,7 @@ function _to_matrix(v::AbstractArray{<:Token}, n, m)
     for i ∈ eachindex(v)
         for (e,λ) ∈ terms(v[i])
             push!(I, i)
-            push!(J, e.I[1])
+            push!(J, index(e)[1])
             push!(V, λ)
         end
     end
