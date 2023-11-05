@@ -6,6 +6,7 @@ export Token
 export ScalarToken
 export ArrayToken
 export IndexedToken
+export LinearCombination
 
 export terms
 export index

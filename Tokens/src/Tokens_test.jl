@@ -53,23 +53,23 @@ end
     b = ScalarToken(:b)
     c = ScalarToken(:c)
 
-    @test repr("text/plain", Tokens.LinearCombination()) == "0"
+    @test repr("text/plain", LinearCombination()) == "0"
 
-    @test a + b isa Tokens.LinearCombination
+    @test a + b isa LinearCombination
     @test repr("text/plain", a+b) == "a + b"
     @test repr("text/plain", b+a) == "a + b"
 
 
-    @test 2a isa Tokens.LinearCombination
+    @test 2a isa LinearCombination
     @test repr("text/plain", 2a) == "2*a"
 
-    @test 2a+b isa Tokens.LinearCombination
+    @test 2a+b isa LinearCombination
     @test repr("text/plain", 2a+b) == "2*a + b"
 
-    @test -2a+b isa Tokens.LinearCombination
+    @test -2a+b isa LinearCombination
     @test repr("text/plain", -2a+b) == "-2*a + b"
 
-    @test 2a - b isa Tokens.LinearCombination
+    @test 2a - b isa LinearCombination
     @test_broken repr("text/plain", -2a+b) == "2*a - b"
 
     @testset "equality" begin
@@ -113,7 +113,7 @@ end
 
 @testset "to_matrix" begin
     @testset "vector of linear combinations" begin
-        @test _to_matrix(Tokens.LinearCombination[], 0, 0) == spzeros(0,0)
+        @test _to_matrix(LinearCombination[], 0, 0) == spzeros(0,0)
 
         @test _to_matrix([1IndexedToken(:v,1)], 1, 1) == sparse(ones(1,1))
         @test _to_matrix([2IndexedToken(:v,1)], 1, 1) == sparse(2ones(1,1))
