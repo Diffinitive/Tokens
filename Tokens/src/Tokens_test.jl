@@ -133,12 +133,26 @@ end
     c = ScalarToken(:c)
     v = ArrayToken(:v, 4)
 
+    T = typeof(v[1])
     cases = @NamedTuple{input, T, target}.([
         (a, LinearCombination{ScalarToken, Int}, 1a),
         (a, LinearCombination{ScalarToken, Float64}, 1.0a),
 
         (v[1], LinearCombination{IndexedToken, Int}, 1v[1]),
         (v[2], LinearCombination{IndexedToken, Float64}, 1.0v[2]),
+
+        (v[1], LinearCombination{T, Int}, 1v[1]),
+        (v[2], LinearCombination{T, Float64}, 1.0v[2]),
+
+        (1a, LinearCombination{ScalarToken, Int}, 1a),
+        (1a, LinearCombination{ScalarToken, Float64}, 1.0a),
+        (1.0a, LinearCombination{ScalarToken, Int}, 1a),
+        (1.0a, LinearCombination{ScalarToken, Float64}, 1.0a),
+
+        (1v[1], LinearCombination{T, Int}, 1v[1]),
+        (1v[1], LinearCombination{T, Float64}, 1.0v[1]),
+        (1.0v[1], LinearCombination{T, Int}, 1v[1]),
+        (1.0v[1], LinearCombination{T, Float64}, 1.0v[1]),
     ])
 
     @testset "convert($(c.T), $(c.input))" for c ∈ cases
