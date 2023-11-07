@@ -140,6 +140,11 @@ Base.:/(lc::LinearCombination, δ::Real) = LinearCombination(Dict(k=>v/δ for (k
 Base.zero(::Type{<:Token}) = LinearCombination()
 Base.zero(::Token) = LinearCombination()
 
+
+Base.convert(::Type{<:LinearCombination{T,S}}, t::T) where {T,S} = LinearCombination{T,S}(Dict(t=>one(S)))
+Base.convert(::Type{<:LinearCombination{T,S1}}, t::LinearCombination{T,S2}) where {T,S1,S2} = LinearCombination{T,promote_type(S1,S2)}(t.d)
+# TODO: Rewrite without most of the type parameters?
+
 function to_matrix(f, n, m)
     v = ArrayToken(:v, m)
     w = f(v)

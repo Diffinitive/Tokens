@@ -119,6 +119,24 @@ end
     end
 end
 
+@testset "convert" begin
+    a = ScalarToken(:a)
+    b = ScalarToken(:b)
+    c = ScalarToken(:c)
+    v = ArrayToken(:v, 4)
+
+    function test_convert(a, T, aT)
+        @test convert(T, a) isa T
+        @test convert(T, a) == aT
+    end
+
+    @testset test_convert(a, LinearCombination{ScalarToken, Int}, 1a)
+    @testset test_convert(a, LinearCombination{ScalarToken, Float64}, 1.0a)
+
+    @testset test_convert(v[1], LinearCombination{IndexedToken, Int}, 1v[1])
+    @testset test_convert(v[2], LinearCombination{IndexedToken, Float64}, 1.0v[2])
+end
+
 @testset "to_matrix" begin
     @testset "vector of linear combinations" begin
         @test _to_matrix(LinearCombination[], 0, 0) == spzeros(0,0)
