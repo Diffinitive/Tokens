@@ -149,14 +149,17 @@ Base.zero(::Type{<:Token}) = LinearCombination()
 Base.zero(::Token) = LinearCombination()
 
 
-function Base.convert(::Type{<:LinearCombination{T,S}}, t::T) where {T,S}
+function Base.convert(L::Type{<:LinearCombination}, t::Token)
+    T = termtype(L)
+    S = weighttype(L)
     return LinearCombination{T,S}(Dict(t=>one(S)))
 end
 
-function Base.convert(::Type{<:LinearCombination{T,S1}}, t::LinearCombination{T,S2}) where {T,S1,S2}
-    return LinearCombination{T,S1}(convert(Dict{T,S1},t.d))
+function Base.convert(L::Type{<:LinearCombination}, t::LinearCombination)
+    T = termtype(L)
+    S = weighttype(L)
+    return LinearCombination{T,S}(convert(Dict{T,S},t.d))
 end
-# TODO: Rewrite without most of the type parameters?
 
 function to_matrix(f, n, m)
     v = ArrayToken(:v, m)
