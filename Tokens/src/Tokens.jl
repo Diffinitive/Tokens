@@ -10,6 +10,8 @@ export LinearCombination
 
 export terms
 export index
+export termtype
+export weighttype
 
 export to_matrix
 
@@ -71,6 +73,12 @@ end
 
 LinearCombination() = LinearCombination(Dict{Token,Real}())
 LinearCombination(t::Token) = LinearCombination(Dict(t=>1))
+
+termtype(::Type{LinearCombination{T,S}}) where {T,S} = T
+termtype(t::LinearCombination) = termtype(typeof(t))
+
+weighttype(::Type{LinearCombination{T,S}}) where {T,S} = S
+weighttype(t::LinearCombination) = weighttype(typeof(t))
 
 terms(t::LinearCombination) = t.d
 

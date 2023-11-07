@@ -80,6 +80,14 @@ end
     @test repr("text/plain", 2.0a+b) == "2.0*a + b"
 
 
+    @test termtype(2.0a) == ScalarToken
+    @test termtype(2a) == ScalarToken
+    @test termtype(LinearCombination{ScalarToken, Float64}) == ScalarToken
+
+    @test weighttype(2.0a) == Float64
+    @test weighttype(2a) == Int64
+    @test weighttype(LinearCombination{ScalarToken, Float64}) == Float64
+
     @testset "equality" begin
         @test 1a == 1a
         @test 2a == 2a
