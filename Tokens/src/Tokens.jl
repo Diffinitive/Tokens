@@ -157,6 +157,17 @@ function Base.convert(L::Type{<:LinearCombination{T,S}}, t::LinearCombination) w
     return LinearCombination{T,S}(convert(Dict{T,S},t.d))
 end
 
+function Base.promote_rule(::Type{T1},::Type{LinearCombination{T2,S}}) where {T1<:Token, T2<:Token, S}
+    T = promote_type(T1,T2)
+    return LinearCombination{T,S}
+end
+
+function Base.promote_rule(::Type{LinearCombination{T1,S1}}, ::Type{LinearCombination{T2,S2}}) where {T1<:Token,T2<:Token,S1,S2}
+    T = promote_type(T1,T2)
+    S = promote_type(S1,S2)
+    return LinearCombination{T,S}
+end
+
 function to_matrix(f, n, m)
     v = ArrayToken(:v, m)
     w = f(v)

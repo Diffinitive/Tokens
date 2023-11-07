@@ -161,6 +161,23 @@ end
     end
 end
 
+@testset "promotion" begin
+    @test promote_type(ScalarToken, LinearCombination{ScalarToken, Int}) == LinearCombination{ScalarToken, Int}
+    @test promote_type(ScalarToken, LinearCombination{ScalarToken, Float64}) == LinearCombination{ScalarToken, Float64}
+
+    @test promote_type(IndexedToken, LinearCombination{IndexedToken, Int}) == LinearCombination{IndexedToken, Int}
+    @test promote_type(IndexedToken, LinearCombination{IndexedToken, Float64}) == LinearCombination{IndexedToken, Float64}
+
+    @test promote_type(IndexedToken{ScalarToken,1}, LinearCombination{IndexedToken{ScalarToken,1}, Int}) == LinearCombination{IndexedToken{ScalarToken,1}, Int}
+    @test promote_type(IndexedToken{ScalarToken,1}, LinearCombination{IndexedToken{ScalarToken,1}, Float64}) == LinearCombination{IndexedToken{ScalarToken,1}, Float64}
+
+    @test promote_type(LinearCombination{IndexedToken,Int}, IndexedToken{ScalarToken,1}) == LinearCombination{IndexedToken,Int}
+
+    @test promote_type(LinearCombination{ScalarToken, Int}, LinearCombination{ScalarToken,Float64}) == LinearCombination{ScalarToken,Float64}
+    @test promote_type(LinearCombination{IndexedToken, Int}, LinearCombination{IndexedToken,Float64}) == LinearCombination{IndexedToken,Float64}
+    @test promote_type(LinearCombination{IndexedToken, Int}, LinearCombination{IndexedToken{ScalarToken},Float64}) == LinearCombination{IndexedToken,Float64}
+end
+
 @testset "to_matrix" begin
     @testset "vector of linear combinations" begin
         @test _to_matrix(LinearCombination[], 0, 0) == spzeros(0,0)
