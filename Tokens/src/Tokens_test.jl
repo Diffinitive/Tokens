@@ -133,16 +133,18 @@ end
     c = ScalarToken(:c)
     v = ArrayToken(:v, 4)
 
-    function test_convert(a, T, aT)
-        @test convert(T, a) isa T
-        @test convert(T, a) == aT
+    cases = @NamedTuple{input, T, target}.([
+        (a, LinearCombination{ScalarToken, Int}, 1a),
+        (a, LinearCombination{ScalarToken, Float64}, 1.0a),
+
+        (v[1], LinearCombination{IndexedToken, Int}, 1v[1]),
+        (v[2], LinearCombination{IndexedToken, Float64}, 1.0v[2]),
+    ])
+
+    @testset "convert($(c.T), $(c.input))" for c ∈ cases
+        @test convert(c.T, c.input) isa c.T
+        @test convert(c.T, c.input) == c.target
     end
-
-    @testset test_convert(a, LinearCombination{ScalarToken, Int}, 1a)
-    @testset test_convert(a, LinearCombination{ScalarToken, Float64}, 1.0a)
-
-    @testset test_convert(v[1], LinearCombination{IndexedToken, Int}, 1v[1])
-    @testset test_convert(v[2], LinearCombination{IndexedToken, Float64}, 1.0v[2])
 end
 
 @testset "to_matrix" begin
