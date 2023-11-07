@@ -149,13 +149,11 @@ Base.zero(::Type{<:Token}) = LinearCombination()
 Base.zero(::Token) = LinearCombination()
 
 
-function Base.convert(L::Type{<:LinearCombination{T}}, t::T) where T<:Token
-    S = weighttype(L)
+function Base.convert(L::Type{<:LinearCombination{T,S}}, t::T) where {T<:Token,S}
     return LinearCombination{T,S}(Dict(t=>one(S)))
 end
 
-function Base.convert(L::Type{<:LinearCombination{T}}, t::LinearCombination{T}) where T<:Token
-    S = weighttype(L)
+function Base.convert(L::Type{<:LinearCombination{T,S}}, t::LinearCombination) where {T<:Token,S}
     return LinearCombination{T,S}(convert(Dict{T,S},t.d))
 end
 
