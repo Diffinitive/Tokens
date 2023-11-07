@@ -202,7 +202,7 @@ end
         ])
 
         v = ArrayToken(:v, 3)
-        @test_broken _to_matrix([zero(Token), v[2]+v[1], zero(Token)], 3, 3) == sparse([
+        @test _to_matrix([zero(Token), v[2]+v[1], zero(Token)], 3, 3) == sparse([
             0 0 0;
             1 1 0;
             0 0 0;
