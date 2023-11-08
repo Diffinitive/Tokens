@@ -178,6 +178,21 @@ end
     @test promote_type(LinearCombination{IndexedToken, Int}, LinearCombination{IndexedToken{ScalarToken},Float64}) == LinearCombination{IndexedToken,Float64}
 end
 
+
+@testset "token array construction" begin
+    a = ScalarToken(:a)
+    b = ScalarToken(:b)
+    c = ScalarToken(:c)
+
+    @test eltype([a,b,c]) == ScalarToken
+    @test eltype([a+b,b, c]) == LinearCombination{ScalarToken, Int}
+    @test eltype([a+b,b, 1.0c]) == LinearCombination{ScalarToken, Float64}
+    @test_broken eltype([zero(ScalarToken), a, c]) == LinearCombination{ScalarToken, Int}
+    @test_broken eltype([zero(ScalarToken), a, 1.0c]) == LinearCombination{ScalarToken, Float64}
+    @test_broken eltype([zero(ScalarToken), a+b, c]) == LinearCombination{ScalarToken, Int}
+    @test_broken eltype([zero(ScalarToken), a+b, 1.0c]) == LinearCombination{ScalarToken, Float64}
+end
+
 @testset "to_matrix" begin
     @testset "vector of linear combinations" begin
         @test _to_matrix(LinearCombination[], 0, 0) == spzeros(0,0)
