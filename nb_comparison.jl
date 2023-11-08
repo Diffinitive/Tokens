@@ -14,6 +14,7 @@ begin
 	
 		using SparseArrays
 		using LinearMaps
+		using Symbolics
 		
 		using Plots
 		using Polynomials
@@ -103,6 +104,29 @@ function to_matrix_linearmap(f, n, m)
 	return sparse(LinearMap(f, n))
 end
 
+# ╔═╡ 6f35320c-1840-4ebc-8c4f-8534b8191bcd
+md"""
+### Symbolics
+"""
+
+# ╔═╡ 5b1cbeb4-ce2e-4566-b649-67b3fddd9fb2
+function sparsemap(f, A::SparseMatrixCSC{Tv,Ti}) where {Tv, Ti}
+    nzval = map(f,nonzeros(A))
+
+    return SparseMatrixCSC{eltype(nzval),Ti}(A.n,A.m,copy(A.colptr),copy(A.rowval), nzval)
+end;
+
+# ╔═╡ 820a78b4-469c-4c0f-bdc7-ef5a0cef5b52
+function to_matrix_symbolics(f, n, m)
+    @variables v[1:m]
+	
+    fv = f(collect(v))
+    
+    return sparsemap(Symbolics.sparsejacobian(fv,v)) do e
+        e.val
+    end
+end
+
 # ╔═╡ 98deccb2-cfe8-459b-be1f-6b480d5dec60
 md"""
 ### Results
@@ -125,6 +149,14 @@ begin
 			p_name = "P₁",
 			Ns = 2:10:8000,
 			converter = to_matrix,
+			f = v->D1(v,1),
+		),
+		(
+			name="Symbolics",
+			p = 1,
+			p_name = "P₁",
+			Ns = 2:10:50,
+			converter = to_matrix_symbolics,
 			f = v->D1(v,1),
 		),
 	]
@@ -187,6 +219,9 @@ end
 # ╟─d2ee3ced-ac21-4f7e-bc7e-81e277baf533
 # ╟─a63b2fe7-fdb8-49dd-9827-bddcac0e98e7
 # ╠═622cb349-7935-44f2-aa5f-57e1fa59b213
+# ╠═6f35320c-1840-4ebc-8c4f-8534b8191bcd
+# ╠═820a78b4-469c-4c0f-bdc7-ef5a0cef5b52
+# ╠═5b1cbeb4-ce2e-4566-b649-67b3fddd9fb2
 # ╟─98deccb2-cfe8-459b-be1f-6b480d5dec60
 # ╠═c1741e59-dece-4a8d-9cc8-b52fe39de106
 # ╠═9cb08acc-ac34-4cb4-aafb-f0165e7b9ad8
