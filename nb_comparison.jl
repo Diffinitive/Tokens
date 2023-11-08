@@ -19,21 +19,15 @@ begin
 		using Polynomials
 end
 
-# ╔═╡ 5217dad3-9064-4107-8be9-9ae6784062ea
-function D1alt(v, h)
-	N = length(v)
-	vₓ = similar(v)
-	
-	vₓ[1] = (v[2] - v[1])/h
-	
-	for i ∈ 2:N-1
-		vₓ[i] = (v[i+1] - v[i-1])/2h
-	end
-		
-	vₓ[N] = (v[N] - v[N-1])/h
-	
-	return vₓ
-end; # Is this faster?
+# ╔═╡ 0bd9c083-a3f0-4168-9d7f-2d6b1210db05
+md"""
+## Operators
+"""
+
+# ╔═╡ 14599617-c539-4ef3-b903-314c057bb38a
+md"""
+### D1
+"""
 
 # ╔═╡ ad33d948-ff32-44d9-89d2-5aa560b9a7fc
 function D1(v, i, h)
@@ -48,15 +42,7 @@ function D1(v, i, h)
 	return (v[i+1] - v[i-1])/2h
 end;
 
-# ╔═╡ 5ef1bcee-49bd-4619-9f3d-8c70fef9cf93
-function D1!(v′, v, h)
-	for i ∈ 1:length(v)
-		v′[i] = @inline D1(v,i,h)
-	end
-end
-
 # ╔═╡ cfb98682-74b8-4819-b856-b63863552513
-# D1(v,h) = [D1(v,i,h) for i ∈ 1:length(v)]
 function D1(v,h)
 	v′ = similar(v)
 	
@@ -64,6 +50,18 @@ function D1(v,h)
 
 	return v′
 end
+
+# ╔═╡ 5ef1bcee-49bd-4619-9f3d-8c70fef9cf93
+function D1!(v′, v, h)
+	for i ∈ 1:length(v)
+		v′[i] = @inline D1(v,i,h)
+	end
+end
+
+# ╔═╡ 3ba18a4d-14a7-45f4-802a-bb9e39652728
+md"""
+### Laplace
+"""
 
 # ╔═╡ c33a6b33-17a5-4e16-8f98-ef0082203874
 function laplace(v,i,h)
@@ -74,13 +72,19 @@ function laplace(v,i,h)
    return (v[i-1]-2v[i]+v[i+1])/h^2
 end
 
-# ╔═╡ 7814eed6-486d-44d5-aa73-3f79128ddc62
-laplace(v,h) = [laplace(v,i,h) for i ∈ 1:length(v)]
+# ╔═╡ 6c039587-0a43-47f1-9523-d8143fd95ba7
+function laplace(v,h)
+	∇²v = similar(v)
+	
+	@inline laplace!(∇²v,v,h)
+
+	return ∇²v
+end
 
 # ╔═╡ 14c41a58-c093-4716-96ce-dcd89fd6f08a
 function laplace!(∇²v, v, h)
 	for i ∈ 1:length(v)
-		∇²v[i] = laplace(v,i,h)
+		∇²v[i] = @inline laplace(v,i,h)
 	end
 end
 
@@ -106,8 +110,6 @@ md"""
 
 # ╔═╡ c1741e59-dece-4a8d-9cc8-b52fe39de106
 begin
-	f = v->D1(v,1)
-
 	cases = [
 		(
 			name="LinearMaps",
@@ -115,6 +117,7 @@ begin
 			p_name = "P₂",
 			Ns = 2:10:4000,
 			converter = to_matrix_linearmap,
+			f = v->D1(v,1),
 		),
 		(
 			name="Tokens",
@@ -122,13 +125,14 @@ begin
 			p_name = "P₁",
 			Ns = 2:10:8000,
 			converter = to_matrix,
+			f = v->D1(v,1),
 		),
 	]
 
 	results = map(cases) do case
-		case.converter(f, 2,2) # compilation?
+		case.converter(case.f, 2,2) # compilation?
 		runtimes = map(case.Ns) do n
-			@elapsed case.converter(f, n,n)
+			@elapsed case.converter(case.f, n,n)
 		end
 			
 		(
@@ -171,13 +175,15 @@ end
 
 # ╔═╡ Cell order:
 # ╠═de05a6cf-9742-4240-9b8c-ff6ee8f077b9
-# ╠═5217dad3-9064-4107-8be9-9ae6784062ea
+# ╟─0bd9c083-a3f0-4168-9d7f-2d6b1210db05
+# ╟─14599617-c539-4ef3-b903-314c057bb38a
 # ╠═ad33d948-ff32-44d9-89d2-5aa560b9a7fc
-# ╠═cfb98682-74b8-4819-b856-b63863552513
 # ╠═5ef1bcee-49bd-4619-9f3d-8c70fef9cf93
+# ╠═cfb98682-74b8-4819-b856-b63863552513
+# ╟─3ba18a4d-14a7-45f4-802a-bb9e39652728
 # ╠═c33a6b33-17a5-4e16-8f98-ef0082203874
-# ╠═7814eed6-486d-44d5-aa73-3f79128ddc62
 # ╠═14c41a58-c093-4716-96ce-dcd89fd6f08a
+# ╠═6c039587-0a43-47f1-9523-d8143fd95ba7
 # ╟─d2ee3ced-ac21-4f7e-bc7e-81e277baf533
 # ╟─a63b2fe7-fdb8-49dd-9827-bddcac0e98e7
 # ╠═622cb349-7935-44f2-aa5f-57e1fa59b213
