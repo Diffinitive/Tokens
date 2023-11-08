@@ -194,7 +194,6 @@ end
 # TODO: change to_matrix to get_array or get_sparse_array and allow higher order tensors
 # TODO: Add documentation
 # TODO: add function for getting all the tokens of an "expression".
-# TODO: Fix broken tests.
 # TODO: Support LinearMaps
 # TODO: Find a good package name
 
