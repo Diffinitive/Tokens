@@ -1,4 +1,7 @@
 # TODO
+* Timing for different stencil widths
+* Timing for power of operator
+* Check type stability
 * Add documentation
 * Find a good package name
 * Support LinearMaps (Should use a package extension)

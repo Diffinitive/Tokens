@@ -191,10 +191,4 @@ function _to_matrix(v::AbstractArray{<:Token}, n, m)
     return sparse(I, J, V, n, m)
 end
 
-# TODO: change to_matrix to get_array or get_sparse_array and allow higher order tensors
-# TODO: Add documentation
-# TODO: add function for getting all the tokens of an "expression".
-# TODO: Support LinearMaps
-# TODO: Find a good package name
-
 end # module
