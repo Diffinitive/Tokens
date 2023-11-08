@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.27
+# v0.19.30
 
 using Markdown
 using InteractiveUtils
@@ -99,75 +99,74 @@ function to_matrix_linearmap(f, n, m)
 	return sparse(LinearMap(f, n))
 end
 
-# ╔═╡ 6eeb3815-af44-4f07-afe3-1bb51009fa92
-begin
-	Ns_lm = 2:10:4000
-
-	to_matrix_linearmap(v->D1(v,1), 2, 2) # Compilation
-	
-	runtimes_lm = map(Ns_lm) do n
-		@elapsed to_matrix_linearmap(v->D1(v,1),n, n)
-	end
-end;
-
-# ╔═╡ 97bd9e6b-c8b2-4a02-a71a-af66d92dfc41
-md"""
-### Tokens
-"""
-
-# ╔═╡ a80056a5-641b-4857-813d-76429e3a7b9c
-begin
-	Ns_tok = 2:10:8000
-	
-	to_matrix(v->D1(v,1),2,2) # Compilation
-
-	runtimes_tok = map(Ns_tok) do n
-		@elapsed to_matrix(v->D1(v,1),n,n)
-	end
-end;
-
 # ╔═╡ 98deccb2-cfe8-459b-be1f-6b480d5dec60
 md"""
 ### Results
 """
 
-# ╔═╡ d18db711-4a8f-461f-80ca-32e85de1b71f
+# ╔═╡ c1741e59-dece-4a8d-9cc8-b52fe39de106
+begin
+	f = v->D1(v,1)
+
+	cases = [
+		(
+			name="LinearMaps",
+			p = 2,
+			p_name = "P₂",
+			Ns = 2:10:4000,
+			converter = to_matrix_linearmap,
+		),
+		(
+			name="Tokens",
+			p = 1,
+			p_name = "P₁",
+			Ns = 2:10:8000,
+			converter = to_matrix,
+		),
+	]
+
+	results = map(cases) do case
+		case.converter(f, 2,2) # compilation?
+		runtimes = map(case.Ns) do n
+			@elapsed case.converter(f, n,n)
+		end
+			
+		(
+			name = case.name,
+			Ns = case.Ns,
+			p = case.p,
+			p_name = case.p_name,
+			runtimes = runtimes
+		)
+	end
+end
+
+# ╔═╡ 9cb08acc-ac34-4cb4-aafb-f0165e7b9ad8
 let
-	p_lm = fit(Ns_lm,runtimes_lm, 2)
-	p_tok = fit(Ns_tok,runtimes_tok, 1)
-	
-	plot(;
+	plt = plot(;
 		title="Matrix fetch time comparison",
 		xlabel="N",
 		ylabel="t [s]",
 		minorgrid=true,
 	)
 
-	scatter!(Ns_lm, runtimes_lm,
-		label="LinearMaps",
-		markerstrokecolor=1,
-		markercolor = 1,
-		markersize=1,
-	)
-	plot!(Ns_lm,p_lm.(Ns_lm);
-		label="P₂",
-		linestyle=:dash,
-		linewidth=3,
-		color=1,
-	)
+	for (i,r) ∈ enumerate(results)
+		p = fit(r.Ns,r.runtimes, r.p)
+		scatter!(r.Ns, r.runtimes,
+			label=r.name,
+			markerstrokecolor=i,
+			markercolor = i,
+			markersize=1,
+		)
+		plot!(r.Ns,p.(r.Ns);
+			label=r.p_name,
+			linestyle=:dash,
+			linewidth=3,
+			color=i,
+		)
+	end
 
-	scatter!(Ns_tok,runtimes_tok;
-		label="Tokens",
-		markerstrokecolor = 2,
-		markercolor = 2,
-		markersize=1,
-	)
-	plot!(Ns_tok,p_tok.(Ns_tok);
-		label="P₁",
-		linestyle=:dash,
-		linewidth=3,
-		color=2,
-	)
+	plt
 end
 
 # ╔═╡ Cell order:
@@ -182,8 +181,6 @@ end
 # ╟─d2ee3ced-ac21-4f7e-bc7e-81e277baf533
 # ╟─a63b2fe7-fdb8-49dd-9827-bddcac0e98e7
 # ╠═622cb349-7935-44f2-aa5f-57e1fa59b213
-# ╠═6eeb3815-af44-4f07-afe3-1bb51009fa92
-# ╟─97bd9e6b-c8b2-4a02-a71a-af66d92dfc41
-# ╠═a80056a5-641b-4857-813d-76429e3a7b9c
 # ╟─98deccb2-cfe8-459b-be1f-6b480d5dec60
-# ╠═d18db711-4a8f-461f-80ca-32e85de1b71f
+# ╠═c1741e59-dece-4a8d-9cc8-b52fe39de106
+# ╠═9cb08acc-ac34-4cb4-aafb-f0165e7b9ad8
