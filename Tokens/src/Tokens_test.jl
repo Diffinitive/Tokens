@@ -53,7 +53,7 @@ end
     b = ScalarToken(:b)
     c = ScalarToken(:c)
 
-    @test repr("text/plain", LinearCombination()) == "0"
+    @test repr("text/plain", LinearCombination{Token,Int}()) == "0"
 
     @test a + b isa LinearCombination
     @test repr("text/plain", a+b) == "a + b"
@@ -187,10 +187,10 @@ end
     @test eltype([a,b,c]) == ScalarToken
     @test eltype([a+b,b, c]) == LinearCombination{ScalarToken, Int}
     @test eltype([a+b,b, 1.0c]) == LinearCombination{ScalarToken, Float64}
-    @test_broken eltype([zero(ScalarToken), a, c]) == LinearCombination{ScalarToken, Int}
-    @test_broken eltype([zero(ScalarToken), a, 1.0c]) == LinearCombination{ScalarToken, Float64}
-    @test_broken eltype([zero(ScalarToken), a+b, c]) == LinearCombination{ScalarToken, Int}
-    @test_broken eltype([zero(ScalarToken), a+b, 1.0c]) == LinearCombination{ScalarToken, Float64}
+    @test eltype([zero(ScalarToken), a, c]) == LinearCombination{ScalarToken, Int}
+    @test eltype([zero(ScalarToken), a, 1.0c]) == LinearCombination{ScalarToken, Float64}
+    @test eltype([zero(ScalarToken), a+b, c]) == LinearCombination{ScalarToken, Int}
+    @test eltype([zero(ScalarToken), a+b, 1.0c]) == LinearCombination{ScalarToken, Float64}
 end
 
 @testset "to_matrix" begin

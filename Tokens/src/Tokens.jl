@@ -71,7 +71,7 @@ struct LinearCombination{T<:Token,S<:Number} <: Token
     d::Dict{T,S}
 end
 
-LinearCombination() = LinearCombination(Dict{Token,Real}())
+LinearCombination{T,S}() where {T,S} = LinearCombination(Dict{T,S}())
 LinearCombination(t::Token) = LinearCombination(Dict(t=>1))
 
 termtype(::Type{LinearCombination{T,S}}) where {T,S} = T
@@ -145,8 +145,8 @@ Base.:-(t1::Token, t2::Token) = t1+(-t2)
 
 Base.:/(lc::LinearCombination, δ::Real) = LinearCombination(Dict(k=>v/δ for (k,v) in lc.d))
 
-Base.zero(::Type{<:Token}) = LinearCombination()
-Base.zero(::Token) = LinearCombination()
+Base.zero(T::Type{<:Token}) = LinearCombination{T,Int}()
+Base.zero(t::Token) = zero(typeof(t))
 
 
 function Base.convert(L::Type{<:LinearCombination{T,S}}, t::T) where {T<:Token,S}
