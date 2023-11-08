@@ -45,14 +45,19 @@ md"""
 ### LinearMaps
 """
 
+# ╔═╡ 622cb349-7935-44f2-aa5f-57e1fa59b213
+function to_matrix_linearmap(f, n, m)
+	return sparse(LinearMap(f, n))
+end
+
 # ╔═╡ 6eeb3815-af44-4f07-afe3-1bb51009fa92
 begin
 	Ns_lm = 2:10:4000
 
-	sparse(LinearMap(v->D1(v,1), Ns_lm[1])) # Compilation
+	to_matrix_linearmap(v->D1(v,1), 2, 2) # Compilation
 	
 	runtimes_lm = map(Ns_lm) do n
-		@elapsed sparse(LinearMap(v->D1(v,1), n))
+		@elapsed to_matrix_linearmap(v->D1(v,1),n, n)
 	end
 end;
 
@@ -121,6 +126,7 @@ end
 # ╠═5217dad3-9064-4107-8be9-9ae6784062ea
 # ╟─d2ee3ced-ac21-4f7e-bc7e-81e277baf533
 # ╟─a63b2fe7-fdb8-49dd-9827-bddcac0e98e7
+# ╠═622cb349-7935-44f2-aa5f-57e1fa59b213
 # ╠═6eeb3815-af44-4f07-afe3-1bb51009fa92
 # ╟─97bd9e6b-c8b2-4a02-a71a-af66d92dfc41
 # ╠═a80056a5-641b-4857-813d-76429e3a7b9c
