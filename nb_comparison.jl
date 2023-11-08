@@ -119,16 +119,13 @@ end;
 # ╔═╡ 820a78b4-469c-4c0f-bdc7-ef5a0cef5b52
 function to_matrix_symbolics(f, n, m)
     @variables v[1:m]
-
-    fv = f(v)
+	
+    fv = f(collect(v))
     
     return sparsemap(Symbolics.sparsejacobian(fv,v)) do e
         e.val
     end
 end
-
-# ╔═╡ 12c278f2-c4fc-4030-91e0-bd420e86218b
-to_matrix_symbolics(v->D1(v,1),10,10)
 
 # ╔═╡ 98deccb2-cfe8-459b-be1f-6b480d5dec60
 md"""
@@ -152,6 +149,14 @@ begin
 			p_name = "P₁",
 			Ns = 2:10:8000,
 			converter = to_matrix,
+			f = v->D1(v,1),
+		),
+		(
+			name="Symbolics",
+			p = 1,
+			p_name = "P₁",
+			Ns = 2:10:50,
+			converter = to_matrix_symbolics,
 			f = v->D1(v,1),
 		),
 	]
@@ -217,7 +222,6 @@ end
 # ╠═6f35320c-1840-4ebc-8c4f-8534b8191bcd
 # ╠═820a78b4-469c-4c0f-bdc7-ef5a0cef5b52
 # ╠═5b1cbeb4-ce2e-4566-b649-67b3fddd9fb2
-# ╠═12c278f2-c4fc-4030-91e0-bd420e86218b
 # ╟─98deccb2-cfe8-459b-be1f-6b480d5dec60
 # ╠═c1741e59-dece-4a8d-9cc8-b52fe39de106
 # ╠═9cb08acc-ac34-4cb4-aafb-f0165e7b9ad8
