@@ -89,7 +89,7 @@ weighttype(t::LinearCombination) = weighttype(typeof(t))
 
 terms(t::LinearCombination) = t.d
 
-Base.:(==)(a::LinearCombination, b::LinearCombination) = all(==(p...) for p ∈ zip(a.d, b.d))
+Base.:(==)(a::LinearCombination, b::LinearCombination) = (a.d == b.d)
 
 function Base.show(io::IO, mime::MIME"text/plain", lc::LinearCombination)
     if isempty(lc.d)
