@@ -53,6 +53,9 @@ end
     b = ScalarToken(:b)
     c = ScalarToken(:c)
 
+    @test LinearCombination(a=>1) == LinearCombination(Dict(a=>1))
+    @test LinearCombination(a=>2, b=>3) == LinearCombination(Dict(a=>2, b=>3))
+
     @test repr("text/plain", LinearCombination{Token,Int}()) == "0"
 
     @test a + b isa LinearCombination

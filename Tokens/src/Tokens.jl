@@ -73,6 +73,7 @@ end
 
 LinearCombination{T,S}() where {T,S} = LinearCombination(Dict{T,S}())
 LinearCombination(t::Token) = LinearCombination(Dict(t=>1))
+LinearCombination(terms::Vararg{Pair}) = LinearCombination(Dict(terms...))
 
 termtype(::Type{LinearCombination{T,S}}) where {T,S} = T
 termtype(t::LinearCombination) = termtype(typeof(t))
