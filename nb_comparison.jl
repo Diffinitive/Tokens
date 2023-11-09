@@ -132,6 +132,40 @@ function localaverage!(Σv, v, R)
 	end
 end
 
+# ╔═╡ e9bd0ee2-9322-4932-8500-2d5c0135c1f8
+md"""
+### Operator exponentiation
+"""
+
+# ╔═╡ 5710599f-267b-4fdd-9fc2-1a973b765f49
+function op_pow!(Aⁿv, Aⁱv, A!, v, n, )
+	# Aⁱv is a vector used to store intermediate results
+
+	@assert n > 0
+	
+	i = 1
+	A!(Aⁱv,v)
+
+	for i ∈ 2:n
+		Aⁿv,Aⁱv = Aⁱv,Aⁿv
+		A!(Aⁱv, Aⁿv)
+	end
+
+	if isodd(n)
+		copy!(Aⁿv, Aⁱv)
+	end
+end
+
+# ╔═╡ 96d32197-f501-4d76-a277-752f4586b14e
+function op_pow(A!, v, n)
+	Aⁿv = similar(v)
+	Aⁱv = similar(v)
+
+	op_pow!(Aⁿv, Aⁱv, A!, v, n)
+
+	return Aⁿv
+end
+
 # ╔═╡ d2ee3ced-ac21-4f7e-bc7e-81e277baf533
 md"""
 ## Conversion functions
@@ -358,6 +392,9 @@ PlutoUI.TableOfContents()
 # ╠═09d6c9b2-a1ae-4bce-a6dc-933c71dbc1c7
 # ╠═2af3174d-86dd-4fb4-83f8-d280763e7d36
 # ╠═7d95c579-02c6-499e-8085-cf0349ad234d
+# ╟─e9bd0ee2-9322-4932-8500-2d5c0135c1f8
+# ╠═5710599f-267b-4fdd-9fc2-1a973b765f49
+# ╠═96d32197-f501-4d76-a277-752f4586b14e
 # ╟─d2ee3ced-ac21-4f7e-bc7e-81e277baf533
 # ╟─6f939569-ac7a-407d-973e-c7d37c527c77
 # ╟─a63b2fe7-fdb8-49dd-9827-bddcac0e98e7
