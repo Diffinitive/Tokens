@@ -198,7 +198,7 @@ function Base.promote_rule(::Type{LinearCombination{T1,S1}}, ::Type{LinearCombin
     return LinearCombination{T,S}
 end
 
-function to_matrix(f, n, m)
+function to_matrix(f, n, m=n)
     v = ArrayToken(:v, m)
     w = f(v)
     return _to_matrix(w, n, m)

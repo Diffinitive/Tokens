@@ -318,5 +318,7 @@ end
                0    0  -1   1;
         ]
 
+        @test to_matrix(example_function, 4) == to_matrix(example_function,4, 4)
+
     end
 end
