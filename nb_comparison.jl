@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.30
+# v0.19.32
 
 using Markdown
 using InteractiveUtils
@@ -110,18 +110,18 @@ function localaverage(v,i,R)
 end
 
 # ╔═╡ 7d95c579-02c6-499e-8085-cf0349ad234d
-function localaverage(v,h)
+function localaverage(v,R)
 	Σv = similar(v)
 	
-	@inline localaverage!(Σv,v,h)
+	@inline localaverage!(Σv,v,R)
 
 	return Σv
 end
 
 # ╔═╡ 2af3174d-86dd-4fb4-83f8-d280763e7d36
-function localaverage!(Σv, v, h)
+function localaverage!(Σv, v, R)
 	for i ∈ 1:length(v)
-		Σv[i] = @inline localaverage(v,i,h)
+		Σv[i] = @inline localaverage(v,i,R)
 	end
 end
 
