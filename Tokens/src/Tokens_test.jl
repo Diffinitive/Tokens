@@ -149,6 +149,11 @@ end
 
         @test 1a+1b == LinearCombination(a=>1, b=>1)
         @test 1a-1b == LinearCombination(a=>1, b=>-1)
+
+        @test 2(a+b) == LinearCombination(a=>2, b=>2)
+        @test .2(a+b) == LinearCombination(a=>.2, b=>.2)
+        @test (a+b)/2 == LinearCombination(a=>.5, b=>.5)
+        @test (a+b)/.5 == LinearCombination(a=>2.0, b=>2.0)
     end
 
     @testset "zero" begin

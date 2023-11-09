@@ -162,13 +162,16 @@ end
 
 
 
-Base.:-(lc::LinearCombination) = LinearCombination(Dict(k=>-v for (k,v) in lc.d))
 
 Base.:+(lc::LinearCombination, t::Token) = lc + LinearCombination(t)
 Base.:+(t::Token, lc::LinearCombination) = LinearCombination(t) + lc
 Base.:+(t1::Token, t2::Token) = LinearCombination(t1)+t2
 
+Base.:-(lc::LinearCombination) = LinearCombination(Dict(k=>-v for (k,v) in lc.d))
 Base.:-(t1::Token, t2::Token) = t1+(-t2)
+
+Base.:*(δ::Real, lc::LinearCombination) = LinearCombination(Dict(k=>δ*v for (k,v) in lc.d))
+Base.:*(lc::LinearCombination, δ::Real) = *(δ, lc)
 
 Base.:/(lc::LinearCombination, δ::Real) = LinearCombination(Dict(k=>v/δ for (k,v) in lc.d))
 
