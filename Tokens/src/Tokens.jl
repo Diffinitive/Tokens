@@ -132,9 +132,24 @@ function Base.:+(lc1::LinearCombination, lc2::LinearCombination)
 end
 
 function Base.:-(lc1::LinearCombination, lc2::LinearCombination)
-    d = mergewith(-, lc1.d, lc2.d)
+    d = _mergewith(-, lc1.d, lc2.d, zero(weighttype(lc1)))
     return LinearCombination(d)
 end
+
+# Base.mergewith only applies the combining function when the key is missing
+# from one of the dicitionaries. This doesn't work if we want to subtract
+# dicts.
+function _mergewith(op, d1::AbstractDict{K,V}, d2::AbstractDict{K,V}, default::V) where {K,V}
+    # Code below is taken from Base and modified
+    d = copy(d1)
+    for (k, v) in d2
+        d[k] = op(get(d1,k,default), d2[k])
+    end
+    return d
+end
+
+
+
 
 Base.:-(lc::LinearCombination) = LinearCombination(Dict(k=>-v for (k,v) in lc.d))
 

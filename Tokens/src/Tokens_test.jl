@@ -105,6 +105,23 @@ end
         @test a-a == 0a
     end
 
+    @testset "arithmetic" begin
+        @test a-b == LinearCombination(a=>1, b=>-1)
+        @test a+b == LinearCombination(a=>1, b=>1)
+        @test -(a+b) == LinearCombination(a=>-1, b=>-1)
+        @test (a+b) + a == LinearCombination(a=>2, b=>1)
+        @test (a+b) - a == LinearCombination(a=>0, b=>1)
+        @test a-(a+b) == LinearCombination(a=>0, b=>-1)
+        @test a+(a+b) == LinearCombination(a=>2, b=>1)
+        @test (a+b) + (b+c) == LinearCombination(a=>1, b=>2, c=>1)
+        @test (a-b) + (b-c) == LinearCombination(a=>1, b=>0, c=>-1)
+        @test (a+b) - (b+c) == LinearCombination(a=>1, b=>0, c=>-1)
+        @test (c-b) - (b-a) == LinearCombination(a=>1, b=>-2, c=>1)
+
+        @test 1a+1b == LinearCombination(a=>1, b=>1)
+        @test 1a-1b == LinearCombination(a=>1, b=>-1)
+    end
+
     @testset "zero" begin
         z = zero(Token)
 
