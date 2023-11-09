@@ -300,7 +300,7 @@ md"""
 
 # ╔═╡ 4dd70d83-36d2-459c-a4a4-90c274689325
 begin
-	N_bandwidth_comparison = 1000
+	N_bandwidth_comparison = 2000
 	bandwidth_cases = [
 		(
 			name="LinearMaps",
@@ -369,6 +369,71 @@ md"""
 ### Different powers
 """
 
+# ╔═╡ f2d6f6e9-17c1-4fd6-b90b-c0f749ebd327
+begin
+	N_pow_comparison = 4000
+	pow_cases = [
+		(
+			name="LinearMaps",
+			# p = 0,
+			# p_name = "P₀",
+			Ps = 1:10,
+			converter = to_matrix_linearmap,
+		),
+		(
+			name="Tokens",
+			# p = 2,
+			# p_name = "P₂",
+			Ps = 1:10,
+			converter = to_matrix,
+		),
+	]
+
+	pow_results = map(pow_cases) do case
+		runtimes = map(case.Ps) do P
+			f(v) = op_pow((∇²w, w)->laplace!(∇²w,w,1), v, P)
+			@elapsed case.converter(f, N_pow_comparison,N_pow_comparison)
+		end
+			
+		(
+			name = case.name,
+			Ps = case.Ps,
+			# p = case.p,
+			# p_name = case.p_name,
+			runtimes = runtimes,
+		)
+	end
+end
+
+# ╔═╡ 86976067-abcf-430a-bf79-7bdbaf510154
+let
+	plt = plot(;
+		title = "N = $N_pow_comparison",
+		xlabel="Exponent",
+		ylabel="t [s]",
+		minorgrid=true,
+	)
+
+	for (i,r) ∈ enumerate(pow_results)
+		
+		# p = fit(Ns,r.runtimes, r.p)
+		scatter!(r.Ps, r.runtimes,
+			label=r.name,
+			markerstrokecolor=i,
+			markercolor = i,
+			markersize=4,
+		)
+		# plot!(Ns,p.(Ns);
+		# 	label=r.p_name,
+		# 	linestyle=:dash,
+		# 	linewidth=3,
+		# 	color=i,
+		# )
+	end
+
+	plt
+end
+
 # ╔═╡ 0a3f2fe9-b987-4628-897d-13858dcbc344
 md"""
 ## Appendix
@@ -410,6 +475,8 @@ PlutoUI.TableOfContents()
 # ╟─a2481e07-a0de-49e3-83f1-ab248f1f5a8f
 # ╟─4dd70d83-36d2-459c-a4a4-90c274689325
 # ╟─44770c58-b36a-46d0-b599-0321cfcf24bf
+# ╟─f2d6f6e9-17c1-4fd6-b90b-c0f749ebd327
+# ╟─86976067-abcf-430a-bf79-7bdbaf510154
 # ╟─0a3f2fe9-b987-4628-897d-13858dcbc344
 # ╠═de05a6cf-9742-4240-9b8c-ff6ee8f077b9
 # ╠═dcdbeeb4-817a-4136-a3e8-27a2d71b4b07
