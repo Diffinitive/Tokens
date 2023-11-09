@@ -93,10 +93,16 @@ function Base.show(io::IO, mime::MIME"text/plain", lc::LinearCombination)
     pairs = collect(lc.d)
     sort!(pairs, by=p->string(p[1]))
 
-    show_term(io, mime, pairs[1])
-    for i ∈ 2:length(pairs)
-        print(io, " + ")
-        show_term(io, mime, pairs[i])
+    first, rest = Iterators.peel(pairs)
+    show_term(io, mime, first)
+    foreach(rest) do p
+        if p[2] >= 0
+            print(io, " + ")
+            show_term(io, mime, p)
+        else
+            print(io, " - ")
+            show_term(io, mime, p[1]=>-p[2])
+        end
     end
 end
 

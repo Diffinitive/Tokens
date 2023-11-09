@@ -73,8 +73,13 @@ end
     @test repr("text/plain", -2a+b) == "-2*a + b"
 
     @test 2a - b isa LinearCombination{ScalarToken, Int}
-    @test_broken repr("text/plain", -2a+b) == "2*a - b"
+    @test repr("text/plain", 2a-b) == "2*a - b"
 
+    @test a - b isa LinearCombination{ScalarToken, Int}
+    @test repr("text/plain", a-b) == "a - b"
+
+    @test a - 2b isa LinearCombination{ScalarToken, Int}
+    @test repr("text/plain", a-2b) == "a - 2*b"
 
     @test 2.0a isa LinearCombination{ScalarToken, Float64}
     @test repr("text/plain", 2.0a) == "2.0*a"
