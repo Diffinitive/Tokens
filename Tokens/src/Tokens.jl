@@ -8,6 +8,7 @@ export ArrayToken
 export IndexedToken
 export LinearCombination
 
+export symbol
 export terms
 export index
 export termtype
@@ -25,6 +26,8 @@ terms(t::ScalarToken) = (t=>1,)
 
 Base.show(io::IO, ::MIME"text/plain", t::ScalarToken) = print(io, t.s)
 
+symbol(t::ScalarToken) = t.s
+
 struct IndexedToken{T<:Token,D} <: Token
     t::T
     I::NTuple{D,Int}
@@ -35,6 +38,7 @@ IndexedToken(s::Symbol, I...) = IndexedToken(ScalarToken(s),I...)
 
 index(t::IndexedToken) = t.I
 terms(t::IndexedToken) = (t=>1,)
+symbol(t::IndexedToken) = symbol(t.t)
 
 function Base.show(io::IO, ::MIME"text/plain", t::IndexedToken)
     show(io, MIME"text/plain"(), t.t)
@@ -47,6 +51,8 @@ struct ArrayToken{T<:Token, D} <: AbstractArray{IndexedToken{T,D},D}
     s::T
     size::NTuple{D,Int}
 end
+
+symbol(t::ArrayToken) = symbol(t.s)
 
 ArrayToken(s, sz...) = ArrayToken(ScalarToken(s), sz)
 

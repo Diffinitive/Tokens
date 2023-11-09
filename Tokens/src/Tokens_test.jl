@@ -16,6 +16,12 @@ using SparseArrays
         @test terms(ScalarToken(:a)) == (ScalarToken(:a)=>1,)
         @test terms(ScalarToken(:b)) == (ScalarToken(:b)=>1,)
     end
+
+
+    @testset "symbol" begin
+        @test symbol(ScalarToken(:a)) == :a
+        @test symbol(ScalarToken(:abc)) == :abc
+    end
 end
 
 @testset "ArrayToken" begin
@@ -31,6 +37,11 @@ end
         v = ArrayToken(:v, 10)
         @inferred v[1]
     end
+
+    @testset "symbol" begin
+        @test symbol(ArrayToken(:A, 3, 3)) == :A
+        @test symbol(ArrayToken(:b, 3)) == :b
+    end
 end
 
 @testset "IndexedToken" begin
@@ -45,6 +56,11 @@ end
     @testset "terms" begin
         @test terms(IndexedToken(:v, 1)) == (IndexedToken(:v, 1)=>1,)
         @test terms(IndexedToken(:w, 2,1)) == (IndexedToken(:w, 2, 1)=>1,)
+    end
+
+    @testset "symbol" begin
+        @test symbol(ArrayToken(:v, 3)[2]) == :v
+        @test symbol(ArrayToken(:w, 2)[1]) == :w
     end
 end
 
