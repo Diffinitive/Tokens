@@ -9,6 +9,8 @@ begin
 		using Pkg
 		Pkg.activate(".")
 		using Revise
+
+		using PlutoUI
 	
 		using Tokens
 	
@@ -19,6 +21,11 @@ begin
 		using Plots
 		using Polynomials
 end
+
+# ╔═╡ dae0ff68-37f8-4f25-9c88-5535cfe24dab
+md"""
+# Comparison of different matrix conversion functions
+"""
 
 # ╔═╡ 0bd9c083-a3f0-4168-9d7f-2d6b1210db05
 md"""
@@ -127,7 +134,13 @@ end
 
 # ╔═╡ d2ee3ced-ac21-4f7e-bc7e-81e277baf533
 md"""
-## Calculation times
+## Conversion functions
+"""
+
+# ╔═╡ 6f939569-ac7a-407d-973e-c7d37c527c77
+md"""
+### Tokens
+The function `to_matrix` is defined in the subpackage `Tokens`.
 """
 
 # ╔═╡ a63b2fe7-fdb8-49dd-9827-bddcac0e98e7
@@ -221,7 +234,7 @@ end
 # ╔═╡ 9cb08acc-ac34-4cb4-aafb-f0165e7b9ad8
 let
 	plt = plot(;
-		title="Matrix fetch time comparison",
+		title="Conversion of D1",
 		xlabel="N",
 		ylabel="t [s]",
 		minorgrid=true,
@@ -251,13 +264,87 @@ md"""
 ### Different bandwidths
 """
 
+# ╔═╡ 4dd70d83-36d2-459c-a4a4-90c274689325
+begin
+	N_bandwidth_comparison = 1000
+	bandwidth_cases = [
+		(
+			name="LinearMaps",
+			p = 0,
+			p_name = "P₀",
+			Rs = 2:50,
+			converter = to_matrix_linearmap,
+		),
+		(
+			name="Tokens",
+			p = 2,
+			p_name = "P₂",
+			Rs = 2:100,
+			converter = to_matrix,
+		),
+	]
+
+	bandwidth_results = map(bandwidth_cases) do case
+		runtimes = map(case.Rs) do R
+			f(v) = localaverage(v, R)
+			@elapsed case.converter(f, N_bandwidth_comparison,N_bandwidth_comparison)
+		end
+			
+		(
+			name = case.name,
+			Rs = case.Rs,
+			p = case.p,
+			p_name = case.p_name,
+			runtimes = runtimes,
+		)
+	end
+end
+
+# ╔═╡ a2481e07-a0de-49e3-83f1-ab248f1f5a8f
+let
+	plt = plot(;
+		title = "N = $N_bandwidth_comparison",
+		xlabel="Bandwidth",
+		ylabel="t [s]",
+		minorgrid=true,
+	)
+
+	for (i,r) ∈ enumerate(bandwidth_results)
+		Ns = 2 .*r.Rs .+ 1
+		
+		p = fit(Ns,r.runtimes, r.p)
+		scatter!(Ns, r.runtimes,
+			label=r.name,
+			markerstrokecolor=i,
+			markercolor = i,
+			markersize=2,
+		)
+		plot!(Ns,p.(Ns);
+			label=r.p_name,
+			linestyle=:dash,
+			linewidth=3,
+			color=i,
+		)
+	end
+
+	plt
+end
+
 # ╔═╡ 44770c58-b36a-46d0-b599-0321cfcf24bf
 md"""
 ### Different powers
 """
 
+# ╔═╡ 0a3f2fe9-b987-4628-897d-13858dcbc344
+md"""
+## Appendix
+"""
+
+# ╔═╡ dcdbeeb4-817a-4136-a3e8-27a2d71b4b07
+PlutoUI.TableOfContents()
+
 # ╔═╡ Cell order:
-# ╠═de05a6cf-9742-4240-9b8c-ff6ee8f077b9
+# ╟─dae0ff68-37f8-4f25-9c88-5535cfe24dab
 # ╟─0bd9c083-a3f0-4168-9d7f-2d6b1210db05
 # ╟─14599617-c539-4ef3-b903-314c057bb38a
 # ╠═ad33d948-ff32-44d9-89d2-5aa560b9a7fc
@@ -272,14 +359,20 @@ md"""
 # ╠═2af3174d-86dd-4fb4-83f8-d280763e7d36
 # ╠═7d95c579-02c6-499e-8085-cf0349ad234d
 # ╟─d2ee3ced-ac21-4f7e-bc7e-81e277baf533
+# ╟─6f939569-ac7a-407d-973e-c7d37c527c77
 # ╟─a63b2fe7-fdb8-49dd-9827-bddcac0e98e7
 # ╠═622cb349-7935-44f2-aa5f-57e1fa59b213
-# ╠═6f35320c-1840-4ebc-8c4f-8534b8191bcd
+# ╟─6f35320c-1840-4ebc-8c4f-8534b8191bcd
 # ╠═820a78b4-469c-4c0f-bdc7-ef5a0cef5b52
 # ╠═5b1cbeb4-ce2e-4566-b649-67b3fddd9fb2
 # ╟─98deccb2-cfe8-459b-be1f-6b480d5dec60
 # ╟─8f1377a1-f857-4387-955c-d6b6f5412642
-# ╟─c1741e59-dece-4a8d-9cc8-b52fe39de106
 # ╟─9cb08acc-ac34-4cb4-aafb-f0165e7b9ad8
+# ╟─c1741e59-dece-4a8d-9cc8-b52fe39de106
 # ╟─502e4207-69b2-47b6-b976-a5185a0ce1d6
+# ╟─a2481e07-a0de-49e3-83f1-ab248f1f5a8f
+# ╟─4dd70d83-36d2-459c-a4a4-90c274689325
 # ╟─44770c58-b36a-46d0-b599-0321cfcf24bf
+# ╟─0a3f2fe9-b987-4628-897d-13858dcbc344
+# ╠═de05a6cf-9742-4240-9b8c-ff6ee8f077b9
+# ╠═dcdbeeb4-817a-4136-a3e8-27a2d71b4b07
