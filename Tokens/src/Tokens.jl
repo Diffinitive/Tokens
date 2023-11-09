@@ -112,8 +112,7 @@ function show_term(io::IO, mime, pair)
     if isone(λ)
         show(io,mime,t)
     else
-        show(io,mime,λ)
-        print(io, "*")
+        show(io,mime, λ)
         show(io, mime, t)
     end
 end

@@ -64,28 +64,28 @@ end
 
 
     @test 2a isa LinearCombination{ScalarToken, Int}
-    @test repr("text/plain", 2a) == "2*a"
+    @test repr("text/plain", 2a) == "2a"
 
     @test 2a+b isa LinearCombination{ScalarToken, Int}
-    @test repr("text/plain", 2a+b) == "2*a + b"
+    @test repr("text/plain", 2a+b) == "2a + b"
 
     @test -2a+b isa LinearCombination{ScalarToken, Int}
-    @test repr("text/plain", -2a+b) == "-2*a + b"
+    @test repr("text/plain", -2a+b) == "-2a + b"
 
     @test 2a - b isa LinearCombination{ScalarToken, Int}
-    @test repr("text/plain", 2a-b) == "2*a - b"
+    @test repr("text/plain", 2a-b) == "2a - b"
 
     @test a - b isa LinearCombination{ScalarToken, Int}
     @test repr("text/plain", a-b) == "a - b"
 
     @test a - 2b isa LinearCombination{ScalarToken, Int}
-    @test repr("text/plain", a-2b) == "a - 2*b"
+    @test repr("text/plain", a-2b) == "a - 2b"
 
     @test 2.0a isa LinearCombination{ScalarToken, Float64}
-    @test repr("text/plain", 2.0a) == "2.0*a"
+    @test repr("text/plain", 2.0a) == "2.0a"
 
     @test 2.0a+b isa LinearCombination{ScalarToken, Float64}
-    @test repr("text/plain", 2.0a+b) == "2.0*a + b"
+    @test repr("text/plain", 2.0a+b) == "2.0a + b"
 
 
     @test termtype(2.0a) == ScalarToken
