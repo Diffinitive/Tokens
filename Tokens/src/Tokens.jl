@@ -149,10 +149,11 @@ end
 # Base.mergewith only applies the combining function when the key is missing
 # from one of the dicitionaries. This doesn't work if we want to subtract
 # dicts.
-function _mergewith(op, d1::AbstractDict{K,V}, d2::AbstractDict{K,V}, default::V) where {K,V}
+function _mergewith(op, d1::AbstractDict, d2::AbstractDict, default)
     # Code below is taken from Base and modified
-    d = copy(d1)
+    d = Base._typeddict(d1,d2)
     for (k, v) in d2
+        k = convert(keytype(d), k)
         d[k] = op(get(d1,k,default), d2[k])
     end
     return d
