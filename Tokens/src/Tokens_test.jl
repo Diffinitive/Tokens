@@ -104,6 +104,14 @@ end
     @test repr("text/plain", 2.0a+b) == "2.0a + b"
 
 
+    v = ArrayToken(:v,15)
+    @test repr("text/plain", v[1]+v[2]+v[3]) == "v[1] + v[2] + v[3]"
+    @test repr("text/plain", v[10]+v[11]+v[12]) == "v[10] + v[11] + v[12]"
+    @test repr("text/plain", v[9]+v[10]+v[11]) == "v[9] + v[10] + v[11]"
+
+    @test repr("text/plain", a + v[1]) == "a + v[1]"
+    @test repr("text/plain", v[1] + ScalarToken(:w)) == "v[1] + w"
+
     @test termtype(2.0a) == ScalarToken
     @test termtype(2a) == ScalarToken
     @test termtype(LinearCombination{ScalarToken, Float64}) == ScalarToken

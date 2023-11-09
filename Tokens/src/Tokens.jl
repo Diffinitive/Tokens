@@ -97,7 +97,16 @@ function Base.show(io::IO, mime::MIME"text/plain", lc::LinearCombination)
         return
     end
     pairs = collect(lc.d)
-    sort!(pairs, by=p->string(p[1]))
+    function sort_value(p)
+        t = p[1]
+
+        if t isa ScalarToken
+            (symbol(t),)
+        elseif t isa IndexedToken
+            (symbol(t), index(t))
+        end
+    end
+    sort!(pairs, by=sort_value)
 
     first, rest = Iterators.peel(pairs)
     show_term(io, mime, first)
