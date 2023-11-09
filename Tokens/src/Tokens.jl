@@ -117,16 +117,6 @@ function show_term(io::IO, mime, pair)
     end
 end
 
-function pair2string(p)
-    t = p[1]
-    λ = p[2]
-    if isone(λ)
-        return string(t)
-    else
-        return "$λ*$t"
-    end
-end
-
 Base.:*(λ::Real, t::Token) = LinearCombination(Dict(t=>λ))
 Base.:*(t::Token, λ::Real) = Base.:*(λ,t)
 Base.:-(t::Token) = -1*t
