@@ -70,7 +70,7 @@ D1(v,1)
 J = sparse_jacobian(D1(v,1),v)
 
 # ╔═╡ cd7e106d-bbed-4636-b04e-c95d7c98d19e
-
+FastDifferentiation.Node
 
 # ╔═╡ 7ad0fb3e-8b2c-4e30-9059-1de83f5d1272
 convert(Vector{Float64},nonzeros(J))

@@ -89,6 +89,42 @@ function laplace!(∇²v, v, h)
 	end
 end
 
+# ╔═╡ 7b043c57-96ab-4349-9ae7-c517dc7ad981
+md"""
+### Local average
+"""
+
+# ╔═╡ 09d6c9b2-a1ae-4bce-a6dc-933c71dbc1c7
+function localaverage(v,i,R)
+	N = length(v)
+	
+	if i-R < 1
+		Is = range(1, 2R+1)
+	elseif i+R > N
+		Is = range(N-2R, N)
+	else
+		Is = range(i-R, i+R)
+	end
+
+	return sum(@view v[Is])/(2R+1)
+end
+
+# ╔═╡ 7d95c579-02c6-499e-8085-cf0349ad234d
+function localaverage(v,h)
+	Σv = similar(v)
+	
+	@inline localaverage!(Σv,v,h)
+
+	return Σv
+end
+
+# ╔═╡ 2af3174d-86dd-4fb4-83f8-d280763e7d36
+function localaverage!(Σv, v, h)
+	for i ∈ 1:length(v)
+		Σv[i] = @inline localaverage(v,i,h)
+	end
+end
+
 # ╔═╡ d2ee3ced-ac21-4f7e-bc7e-81e277baf533
 md"""
 ## Calculation times
@@ -129,12 +165,17 @@ end
 
 # ╔═╡ 98deccb2-cfe8-459b-be1f-6b480d5dec60
 md"""
-### Results
+## Results
+"""
+
+# ╔═╡ 8f1377a1-f857-4387-955c-d6b6f5412642
+md"""
+### Different sizes
 """
 
 # ╔═╡ c1741e59-dece-4a8d-9cc8-b52fe39de106
 begin
-	cases = [
+	size_cases = [
 		(
 			name="LinearMaps",
 			p = 2,
@@ -151,17 +192,17 @@ begin
 			converter = to_matrix,
 			f = v->D1(v,1),
 		),
-		(
-			name="Symbolics",
-			p = 1,
-			p_name = "P₁",
-			Ns = 2:10:50,
-			converter = to_matrix_symbolics,
-			f = v->D1(v,1),
-		),
+		# (
+		# 	name="Symbolics",
+		# 	p = 1,
+		# 	p_name = "P₁",
+		# 	Ns = 2:10:50,
+		# 	converter = to_matrix_symbolics,
+		# 	f = v->D1(v,1),
+		# ),
 	]
 
-	results = map(cases) do case
+	size_results = map(size_cases) do case
 		case.converter(case.f, 2,2) # compilation?
 		runtimes = map(case.Ns) do n
 			@elapsed case.converter(case.f, n,n)
@@ -186,7 +227,7 @@ let
 		minorgrid=true,
 	)
 
-	for (i,r) ∈ enumerate(results)
+	for (i,r) ∈ enumerate(size_results)
 		p = fit(r.Ns,r.runtimes, r.p)
 		scatter!(r.Ns, r.runtimes,
 			label=r.name,
@@ -205,6 +246,16 @@ let
 	plt
 end
 
+# ╔═╡ 502e4207-69b2-47b6-b976-a5185a0ce1d6
+md"""
+### Different bandwidths
+"""
+
+# ╔═╡ 44770c58-b36a-46d0-b599-0321cfcf24bf
+md"""
+### Different powers
+"""
+
 # ╔═╡ Cell order:
 # ╠═de05a6cf-9742-4240-9b8c-ff6ee8f077b9
 # ╟─0bd9c083-a3f0-4168-9d7f-2d6b1210db05
@@ -216,6 +267,10 @@ end
 # ╠═c33a6b33-17a5-4e16-8f98-ef0082203874
 # ╠═14c41a58-c093-4716-96ce-dcd89fd6f08a
 # ╠═6c039587-0a43-47f1-9523-d8143fd95ba7
+# ╟─7b043c57-96ab-4349-9ae7-c517dc7ad981
+# ╠═09d6c9b2-a1ae-4bce-a6dc-933c71dbc1c7
+# ╠═2af3174d-86dd-4fb4-83f8-d280763e7d36
+# ╠═7d95c579-02c6-499e-8085-cf0349ad234d
 # ╟─d2ee3ced-ac21-4f7e-bc7e-81e277baf533
 # ╟─a63b2fe7-fdb8-49dd-9827-bddcac0e98e7
 # ╠═622cb349-7935-44f2-aa5f-57e1fa59b213
@@ -223,5 +278,8 @@ end
 # ╠═820a78b4-469c-4c0f-bdc7-ef5a0cef5b52
 # ╠═5b1cbeb4-ce2e-4566-b649-67b3fddd9fb2
 # ╟─98deccb2-cfe8-459b-be1f-6b480d5dec60
-# ╠═c1741e59-dece-4a8d-9cc8-b52fe39de106
-# ╠═9cb08acc-ac34-4cb4-aafb-f0165e7b9ad8
+# ╟─8f1377a1-f857-4387-955c-d6b6f5412642
+# ╟─c1741e59-dece-4a8d-9cc8-b52fe39de106
+# ╟─9cb08acc-ac34-4cb4-aafb-f0165e7b9ad8
+# ╟─502e4207-69b2-47b6-b976-a5185a0ce1d6
+# ╟─44770c58-b36a-46d0-b599-0321cfcf24bf
