@@ -37,9 +37,12 @@ end
 
 function profile_run(N)
     for i ∈ 1:N
-        to_matrix(D1,2000)
+        to_matrix(v->D2(v,.1),2000)
     end
 end
 
 profile_run(1)
+
+@benchmark to_matrix($(v->D2(v,.1)),2000)
+
 @profview profile_run(100)
