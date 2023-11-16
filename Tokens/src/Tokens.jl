@@ -58,7 +58,7 @@ ArrayToken(s, sz...) = ArrayToken(ScalarToken(s), sz)
 
 Base.size(a::ArrayToken) = a.size
 
-function Base.getindex(a::ArrayToken, I...)
+function Base.getindex(a::ArrayToken, I::Vararg{Int})
     checkbounds(a, I...)
 
     return IndexedToken(a.s, I...)
