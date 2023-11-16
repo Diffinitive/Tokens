@@ -132,8 +132,8 @@ function show_term(io::IO, mime, pair)
     end
 end
 
-Base.:*(λ::Real, t::Token) = LinearCombination(Dict(t=>λ))
-Base.:*(t::Token, λ::Real) = Base.:*(λ,t)
+Base.:*(λ::Number, t::Token) = LinearCombination(Dict(t=>λ))
+Base.:*(t::Token, λ::Number) = Base.:*(λ,t)
 Base.:-(t::Token) = -1*t
 
 function Base.:+(lc1::LinearCombination, lc2::LinearCombination)
@@ -170,10 +170,10 @@ Base.:+(t1::Token, t2::Token) = LinearCombination(t1)+t2
 Base.:-(lc::LinearCombination) = LinearCombination(Dict(k=>-v for (k,v) in lc.d))
 Base.:-(t1::Token, t2::Token) = t1+(-t2)
 
-Base.:*(δ::Real, lc::LinearCombination) = LinearCombination(Dict(k=>δ*v for (k,v) in lc.d))
-Base.:*(lc::LinearCombination, δ::Real) = *(δ, lc)
+Base.:*(δ::Number, lc::LinearCombination) = LinearCombination(Dict(k=>δ*v for (k,v) in lc.d))
+Base.:*(lc::LinearCombination, δ::Number) = *(δ, lc)
 
-Base.:/(lc::LinearCombination, δ::Real) = LinearCombination(Dict(k=>v/δ for (k,v) in lc.d))
+Base.:/(lc::LinearCombination, δ::Number) = LinearCombination(Dict(k=>v/δ for (k,v) in lc.d))
 
 Base.zero(T::Type{<:Token}) = LinearCombination{T,Int}()
 Base.zero(t::Token) = zero(typeof(t))
