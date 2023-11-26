@@ -65,7 +65,7 @@ function Base.getindex(a::ArrayToken, I::Vararg{Int})
 end
 
 # For when when someone (show(::AbstractArray)) indexes a vector with two indecies.
-function Base.getindex(a::ArrayToken{T,1} where T, i,j)
+function Base.getindex(a::ArrayToken{T,1} where T, i::Int,j::Int)
     checkbounds(a, i, j)
 
     return IndexedToken(a.s, i)
