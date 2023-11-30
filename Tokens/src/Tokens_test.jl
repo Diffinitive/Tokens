@@ -293,6 +293,15 @@ end
             1 1 0;
             0 0 0;
         ])
+
+        ## Other types
+        v = ArrayToken(:v, 3)
+        Av = [1//1*v[1]+1//1*v[2], 1//1*v[2]+1//1*v[3]]
+        @test eltype(_to_matrix(Av, 2, 3)) == Rational{Int}
+        @test _to_matrix(Av, 2, 3) == sparse([
+            1//1 1//1 0//1;
+            0//1 1//1 1//1;
+        ])
     end
 
     function example_function(v, h=1)
