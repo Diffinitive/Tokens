@@ -176,6 +176,7 @@ Base.:*(lc::LinearCombination, δ::Number) = *(δ, lc)
 Base.:/(lc::LinearCombination, δ::Number) = LinearCombination(Dict(k=>v/δ for (k,v) in lc.d))
 
 Base.zero(T::Type{<:Token}) = LinearCombination{T,Int}()
+Base.zero(T::Type{<:LinearCombination}) = LinearCombination{termtype(T), weighttype(T)}()
 Base.zero(t::Token) = zero(typeof(t))
 
 

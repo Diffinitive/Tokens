@@ -169,6 +169,15 @@ end
         @test zero(ScalarToken(:a)) == z
 
         @test zeros(Token, 3) == [z,z,z]
+
+        @test zero(LinearCombination{ScalarToken,Int}) isa LinearCombination{ScalarToken,Int}
+        @test zero(LinearCombination{ScalarToken,Float64}) isa LinearCombination{ScalarToken,Float64}
+
+        z = zero(LinearCombination{ScalarToken,Int})
+        @test z + z  == z
+        @test 1a + z == 1a
+        @test zero(ScalarToken) == z
+        @test zero(ScalarToken(:a)) == z
     end
 
     @testset "terms" begin
