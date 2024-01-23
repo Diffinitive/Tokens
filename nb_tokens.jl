@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.30
+# v0.19.36
 
 using Markdown
 using InteractiveUtils
@@ -71,7 +71,13 @@ end;
 vₓ = D1(v,1)
 
 # ╔═╡ ec1fefcb-b27e-484e-b4c3-53d62110df10
-to_matrix(vₓ)
+to_matrix(vₓ, 10)
+
+# ╔═╡ b7d06580-ea6f-4927-946d-a6ddf9e912f1
+to_matrix(v->D1(v,1), 12)
+
+# ╔═╡ a8df7b1f-2f25-4f95-8630-49a3383d63cc
+
 
 # ╔═╡ Cell order:
 # ╠═c9fe44ec-49d4-11eb-023a-2d887e9efdc5
@@ -89,4 +95,6 @@ to_matrix(vₓ)
 # ╠═490a50ac-49c9-11eb-0a62-fb39771c8b84
 # ╠═6a40dd18-49c9-11eb-22f7-63445b566318
 # ╠═ec1fefcb-b27e-484e-b4c3-53d62110df10
+# ╠═b7d06580-ea6f-4927-946d-a6ddf9e912f1
 # ╠═bf841c82-49c8-11eb-14a9-69253453f68f
+# ╠═a8df7b1f-2f25-4f95-8630-49a3383d63cc
