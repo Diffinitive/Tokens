@@ -18,6 +18,8 @@ export to_matrix
 
 abstract type Token end
 
+Base.broadcastable(t::Token) = Ref(t)
+
 struct ScalarToken <: Token
     s::Symbol
 end
