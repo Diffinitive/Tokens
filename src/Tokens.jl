@@ -19,6 +19,7 @@ export to_matrix
 abstract type Token end
 
 Base.broadcastable(t::Token) = Ref(t)
+Base.eltype(::Type{T}) where T<:Token = T # RecursiveArrayTools relies on this to give the correct element type of ArrayPartition()?
 
 struct ScalarToken <: Token
     s::Symbol
