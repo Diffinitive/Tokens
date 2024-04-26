@@ -17,3 +17,5 @@ Would it work to reuse but never modify the used storage?
 Could we pre allocate the size of the LinearCombinations in some way?
 We can implement `+(a...)` to cut down on the number of allocations
 
+
+Static linear combinations could perhaps be simplified using https://matthias314.github.io/SmallCollections.jl/stable/
