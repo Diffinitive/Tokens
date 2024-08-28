@@ -4,6 +4,7 @@ authors = ["Jonatan Werpers <jonatan@werpers.com> and contributors"]
 version = "0.1.0"
 
 [deps]
+SparseArrayKit = "a9a3c162-d163-4c15-8926-b8794fbefed2"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]

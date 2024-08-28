@@ -1,6 +1,7 @@
 module Tokens
 
 using SparseArrays
+using SparseArrayKit
 
 export Token
 export ScalarToken

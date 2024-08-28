@@ -14,7 +14,7 @@ function _to_matrix(v::AbstractArray{<:Token}, n, m)
     for i ∈ eachindex(v)
         for (e,λ) ∈ terms(v[i])
             push!(I, i)
-            push!(J, index(e)[1])
+            push!(J, only(index(e)))
 
             try
                 push!(V, λ)
@@ -27,4 +27,17 @@ function _to_matrix(v::AbstractArray{<:Token}, n, m)
     end
 
     return sparse(I, J, V, n, m)
+end
+
+function _to_tensor(v, range_dim, domain_dim)
+    T = weighttype(eltype(v))
+    A = SparseArray{T}(undef, range_dim..., domain_dim...)
+
+    for i ∈ CartesianIndices(v)
+        for (e,λ) ∈ terms(v[i])
+            A[i, index(e)...] = λ
+        end
+    end
+
+    return A
 end
