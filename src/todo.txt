@@ -1,7 +1,0 @@
-* Static linear combinations
-* Where should Tokens go?
-* ScaledToken
-
-* Stencil stuff
-
-* SingularOperators
