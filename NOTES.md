@@ -6,6 +6,7 @@
 * add function for getting all the tokens of an "expression".
 * Find a way to allow higher order tensors
 * Handle both f and f! as input to the matrix converter
+* Remove need to send range and domain dims to `_to_matrix`
 
 How to think about resusing objects in linear combinations? For example when doing `2*lc` do we have to allocate a new dict for the return object? When can things break? When will they not break?
 Would it work to reuse but never modify the used storage?
