@@ -1,7 +1,7 @@
 name = "Tokens"
 uuid = "040c2ec2-8d69-4aca-bf03-7d3a7092f2f6"
 authors = ["Jonatan Werpers <jonatan@werpers.com> and contributors"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 SparseArrayKit = "a9a3c162-d163-4c15-8926-b8794fbefed2"
