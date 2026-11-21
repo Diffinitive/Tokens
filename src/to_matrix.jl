@@ -28,7 +28,7 @@ function to_matrix(v::AbstractArray{<:Token}, n, m=n)
     return sparse(I, J, V, n, m)
 end
 
-function _to_tensor(v, range_dim, domain_dim)
+function to_tensor(v, range_dim, domain_dim)
     T = weighttype(eltype(v))
     A = SparseArray{T}(undef, range_dim..., domain_dim...)
 

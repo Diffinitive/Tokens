@@ -1,6 +1,5 @@
 using Test
 using Tokens
-using Tokens: _to_tensor
 using SparseArrays
 using Tullio
 
@@ -89,17 +88,17 @@ end
     ])
 end
 
-@testset "_to_tensor" begin
+@testset "to_tensor" begin
     A = rand(1:100, 2, 2, 3, 2)
     v = ArrayToken('v', 3,2)
 
     @tullio Av[i,j] := A[i,j,k,l]*v[k,l]
-    @test _to_tensor(Av, (2,2),(3,2)) == A
+    @test to_tensor(Av, (2,2),(3,2)) == A
 
     A = rand(1:100, 3, 4, 2, 3)
     v = ArrayToken('v', 2,3)
 
     @tullio Av[i,j] := A[i,j,k,l]*v[k,l]
-    @test _to_tensor(Av, (3,4),(2,3)) == A
+    @test to_tensor(Av, (3,4),(2,3)) == A
 end
 

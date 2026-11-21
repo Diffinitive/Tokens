@@ -16,6 +16,7 @@ export termtype
 export weighttype
 
 export to_matrix
+export to_tensor
 
 include("token.jl")
 include("to_matrix.jl")
