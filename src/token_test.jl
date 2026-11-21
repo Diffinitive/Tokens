@@ -4,7 +4,13 @@ using Tokens: _to_matrix
 using SparseArrays
 
 @testset "ScalarToken" begin
+    @test ScalarToken(:a) isa ScalarToken{Symbol}
     @test ScalarToken(:a) isa Token
+    t = ScalarToken((1, "a"))
+    @test t isa ScalarToken{Tuple{Int,String}}
+    @test t.symbol === (1, "a")
+    @test symbol(t) === t.symbol
+    @test repr("text/plain", ScalarToken("name")) == "name"
 
     @test repr("text/plain", ScalarToken(:a)) == "a"
     @test repr("text/plain", ScalarToken(:name)) == "name"
@@ -26,7 +32,7 @@ end
 
 @testset "ArrayToken" begin
     A = ArrayToken(:A, 3, 3)
-    @test A isa AbstractArray{IndexedToken{ScalarToken,2}, 2}
+    @test A isa AbstractArray{IndexedToken{ScalarToken{Symbol},2}, 2}
     @test size(A) == (3, 3)
 
     @test A[1,2] isa Token
@@ -45,8 +51,12 @@ end
 end
 
 @testset "IndexedToken" begin
-    @test IndexedToken(:v, 1) isa IndexedToken{ScalarToken, 1}
-    @test IndexedToken(:v, 1,2) isa IndexedToken{ScalarToken, 2}
+    @test IndexedToken(:v, 1) isa IndexedToken{ScalarToken{Symbol}, 1}
+    @test IndexedToken(:v, 1,2) isa IndexedToken{ScalarToken{Symbol}, 2}
+    t = IndexedToken("v", 2)
+    @test t isa IndexedToken{ScalarToken{String}, 1}
+    @test symbol(t) == "v"
+    @test index(t) == (2,)
 
     @testset "index" begin
         @test index(IndexedToken(:v, 1)) == (1,)
@@ -79,28 +89,28 @@ end
     @test repr("text/plain", b+a) == "a + b"
 
 
-    @test 2a isa LinearCombination{ScalarToken, Int}
+    @test 2a isa LinearCombination{ScalarToken{Symbol}, Int}
     @test repr("text/plain", 2a) == "2a"
 
-    @test 2a+b isa LinearCombination{ScalarToken, Int}
+    @test 2a+b isa LinearCombination{ScalarToken{Symbol}, Int}
     @test repr("text/plain", 2a+b) == "2a + b"
 
-    @test -2a+b isa LinearCombination{ScalarToken, Int}
+    @test -2a+b isa LinearCombination{ScalarToken{Symbol}, Int}
     @test repr("text/plain", -2a+b) == "-2a + b"
 
-    @test 2a - b isa LinearCombination{ScalarToken, Int}
+    @test 2a - b isa LinearCombination{ScalarToken{Symbol}, Int}
     @test repr("text/plain", 2a-b) == "2a - b"
 
-    @test a - b isa LinearCombination{ScalarToken, Int}
+    @test a - b isa LinearCombination{ScalarToken{Symbol}, Int}
     @test repr("text/plain", a-b) == "a - b"
 
-    @test a - 2b isa LinearCombination{ScalarToken, Int}
+    @test a - 2b isa LinearCombination{ScalarToken{Symbol}, Int}
     @test repr("text/plain", a-2b) == "a - 2b"
 
-    @test 2.0a isa LinearCombination{ScalarToken, Float64}
+    @test 2.0a isa LinearCombination{ScalarToken{Symbol}, Float64}
     @test repr("text/plain", 2.0a) == "2.0a"
 
-    @test 2.0a+b isa LinearCombination{ScalarToken, Float64}
+    @test 2.0a+b isa LinearCombination{ScalarToken{Symbol}, Float64}
     @test repr("text/plain", 2.0a+b) == "2.0a + b"
 
 
@@ -112,13 +122,13 @@ end
     @test repr("text/plain", a + v[1]) == "a + v[1]"
     @test repr("text/plain", v[1] + ScalarToken(:w)) == "v[1] + w"
 
-    @test termtype(2.0a) == ScalarToken
-    @test termtype(2a) == ScalarToken
-    @test termtype(LinearCombination{ScalarToken, Float64}) == ScalarToken
+    @test termtype(2.0a) == ScalarToken{Symbol}
+    @test termtype(2a) == ScalarToken{Symbol}
+    @test termtype(LinearCombination{ScalarToken{Symbol}, Float64}) == ScalarToken{Symbol}
 
     @test weighttype(2.0a) == Float64
     @test weighttype(2a) == Int64
-    @test weighttype(LinearCombination{ScalarToken, Float64}) == Float64
+    @test weighttype(LinearCombination{ScalarToken{Symbol}, Float64}) == Float64
 
     @testset "equality" begin
         @test 1a == 1a
@@ -165,18 +175,18 @@ end
         @test z + z  == z
         @test 1a + z == 1a
 
-        @test zero(ScalarToken) == z
+        @test zero(ScalarToken{Symbol}) == z
         @test zero(ScalarToken(:a)) == z
 
         @test zeros(Token, 3) == [z,z,z]
 
-        @test zero(LinearCombination{ScalarToken,Int}) isa LinearCombination{ScalarToken,Int}
-        @test zero(LinearCombination{ScalarToken,Float64}) isa LinearCombination{ScalarToken,Float64}
+        @test zero(LinearCombination{ScalarToken{Symbol},Int}) isa LinearCombination{ScalarToken{Symbol},Int}
+        @test zero(LinearCombination{ScalarToken{Symbol},Float64}) isa LinearCombination{ScalarToken{Symbol},Float64}
 
-        z = zero(LinearCombination{ScalarToken,Int})
+        z = zero(LinearCombination{ScalarToken{Symbol},Int})
         @test z + z  == z
         @test 1a + z == 1a
-        @test zero(ScalarToken) == z
+        @test zero(ScalarToken{Symbol}) == z
         @test zero(ScalarToken(:a)) == z
     end
 
@@ -201,8 +211,8 @@ end
 
     T = typeof(v[1])
     cases = @NamedTuple{input, T, target}.([
-        (a, LinearCombination{ScalarToken, Int}, 1a),
-        (a, LinearCombination{ScalarToken, Float64}, 1.0a),
+        (a, LinearCombination{ScalarToken{Symbol}, Int}, 1a),
+        (a, LinearCombination{ScalarToken{Symbol}, Float64}, 1.0a),
 
         (v[1], LinearCombination{IndexedToken, Int}, 1v[1]),
         (v[2], LinearCombination{IndexedToken, Float64}, 1.0v[2]),
@@ -210,10 +220,10 @@ end
         (v[1], LinearCombination{T, Int}, 1v[1]),
         (v[2], LinearCombination{T, Float64}, 1.0v[2]),
 
-        (1a, LinearCombination{ScalarToken, Int}, 1a),
-        (1a, LinearCombination{ScalarToken, Float64}, 1.0a),
-        (1.0a, LinearCombination{ScalarToken, Int}, 1a),
-        (1.0a, LinearCombination{ScalarToken, Float64}, 1.0a),
+        (1a, LinearCombination{ScalarToken{Symbol}, Int}, 1a),
+        (1a, LinearCombination{ScalarToken{Symbol}, Float64}, 1.0a),
+        (1.0a, LinearCombination{ScalarToken{Symbol}, Int}, 1a),
+        (1.0a, LinearCombination{ScalarToken{Symbol}, Float64}, 1.0a),
 
         (1v[1], LinearCombination{T, Int}, 1v[1]),
         (1v[1], LinearCombination{T, Float64}, 1.0v[1]),
@@ -228,20 +238,20 @@ end
 end
 
 @testset "promotion" begin
-    @test promote_type(ScalarToken, LinearCombination{ScalarToken, Int}) == LinearCombination{ScalarToken, Int}
-    @test promote_type(ScalarToken, LinearCombination{ScalarToken, Float64}) == LinearCombination{ScalarToken, Float64}
+    @test promote_type(ScalarToken{Symbol}, LinearCombination{ScalarToken{Symbol}, Int}) == LinearCombination{ScalarToken{Symbol}, Int}
+    @test promote_type(ScalarToken{Symbol}, LinearCombination{ScalarToken{Symbol}, Float64}) == LinearCombination{ScalarToken{Symbol}, Float64}
 
     @test promote_type(IndexedToken, LinearCombination{IndexedToken, Int}) == LinearCombination{IndexedToken, Int}
     @test promote_type(IndexedToken, LinearCombination{IndexedToken, Float64}) == LinearCombination{IndexedToken, Float64}
 
-    @test promote_type(IndexedToken{ScalarToken,1}, LinearCombination{IndexedToken{ScalarToken,1}, Int}) == LinearCombination{IndexedToken{ScalarToken,1}, Int}
-    @test promote_type(IndexedToken{ScalarToken,1}, LinearCombination{IndexedToken{ScalarToken,1}, Float64}) == LinearCombination{IndexedToken{ScalarToken,1}, Float64}
+    @test promote_type(IndexedToken{ScalarToken{Symbol},1}, LinearCombination{IndexedToken{ScalarToken{Symbol},1}, Int}) == LinearCombination{IndexedToken{ScalarToken{Symbol},1}, Int}
+    @test promote_type(IndexedToken{ScalarToken{Symbol},1}, LinearCombination{IndexedToken{ScalarToken{Symbol},1}, Float64}) == LinearCombination{IndexedToken{ScalarToken{Symbol},1}, Float64}
 
-    @test promote_type(LinearCombination{IndexedToken,Int}, IndexedToken{ScalarToken,1}) == LinearCombination{IndexedToken,Int}
+    @test promote_type(LinearCombination{IndexedToken,Int}, IndexedToken{ScalarToken{Symbol},1}) == LinearCombination{IndexedToken,Int}
 
-    @test promote_type(LinearCombination{ScalarToken, Int}, LinearCombination{ScalarToken,Float64}) == LinearCombination{ScalarToken,Float64}
+    @test promote_type(LinearCombination{ScalarToken{Symbol}, Int}, LinearCombination{ScalarToken{Symbol},Float64}) == LinearCombination{ScalarToken{Symbol},Float64}
     @test promote_type(LinearCombination{IndexedToken, Int}, LinearCombination{IndexedToken,Float64}) == LinearCombination{IndexedToken,Float64}
-    @test promote_type(LinearCombination{IndexedToken, Int}, LinearCombination{IndexedToken{ScalarToken},Float64}) == LinearCombination{IndexedToken,Float64}
+    @test promote_type(LinearCombination{IndexedToken, Int}, LinearCombination{IndexedToken{ScalarToken{Symbol}},Float64}) == LinearCombination{IndexedToken,Float64}
 end
 
 
@@ -250,12 +260,12 @@ end
     b = ScalarToken(:b)
     c = ScalarToken(:c)
 
-    @test eltype([a,b,c]) == ScalarToken
-    @test eltype([a+b,b, c]) == LinearCombination{ScalarToken, Int}
-    @test eltype([a+b,b, 1.0c]) == LinearCombination{ScalarToken, Float64}
-    @test eltype([zero(ScalarToken), a, c]) == LinearCombination{ScalarToken, Int}
-    @test eltype([zero(ScalarToken), a, 1.0c]) == LinearCombination{ScalarToken, Float64}
-    @test eltype([zero(ScalarToken), a+b, c]) == LinearCombination{ScalarToken, Int}
-    @test eltype([zero(ScalarToken), a+b, 1.0c]) == LinearCombination{ScalarToken, Float64}
+    @test eltype([a,b,c]) == ScalarToken{Symbol}
+    @test eltype([a+b,b, c]) == LinearCombination{ScalarToken{Symbol}, Int}
+    @test eltype([a+b,b, 1.0c]) == LinearCombination{ScalarToken{Symbol}, Float64}
+    @test eltype([zero(ScalarToken{Symbol}), a, c]) == LinearCombination{ScalarToken{Symbol}, Int}
+    @test eltype([zero(ScalarToken{Symbol}), a, 1.0c]) == LinearCombination{ScalarToken{Symbol}, Float64}
+    @test eltype([zero(ScalarToken{Symbol}), a+b, c]) == LinearCombination{ScalarToken{Symbol}, Int}
+    @test eltype([zero(ScalarToken{Symbol}), a+b, 1.0c]) == LinearCombination{ScalarToken{Symbol}, Float64}
 end
 

@@ -15,6 +15,9 @@ begin
 	
 end
 
+# ╔═╡ dd8f256e-7eac-4e99-a828-c88ebdab34ec
+using StaticArrays
+
 # ╔═╡ 0c89070c-3de6-11eb-2399-d108ce5e2d47
 IndexedToken(:a,(1,2))
 
@@ -78,14 +81,20 @@ to_matrix(v->D1(v,1), 12)
 
 # ╔═╡ a8df7b1f-2f25-4f95-8630-49a3383d63cc
 let
-	v = ArrayToken(:v,10)
-	isbits(eltype(v))
-	eltype(v)
-	# reinterpret(reshape, NTuple{2,eltype(v)}, v)
+	v = ArrayToken('v',2,5)
+	isbitstype(eltype(v))
+	# eltype(v)
+	V = reinterpret(reshape, SVector{2,eltype(v)}, v)
+
+	collect(V)
+	# reinterpret(reshape, eltype(v), V)
 end
 
+# ╔═╡ 03e40fbd-1f46-4f61-a4d9-a89682170b75
+ArrayToken('v', 10)
+
 # ╔═╡ d5f40270-521d-4e12-bea5-5b1e4ddb1b2d
-isbits(:s)
+isbits('a')
 
 # ╔═╡ Cell order:
 # ╠═c9fe44ec-49d4-11eb-023a-2d887e9efdc5
@@ -106,4 +115,6 @@ isbits(:s)
 # ╠═b7d06580-ea6f-4927-946d-a6ddf9e912f1
 # ╠═bf841c82-49c8-11eb-14a9-69253453f68f
 # ╠═a8df7b1f-2f25-4f95-8630-49a3383d63cc
+# ╠═dd8f256e-7eac-4e99-a828-c88ebdab34ec
+# ╠═03e40fbd-1f46-4f61-a4d9-a89682170b75
 # ╠═d5f40270-521d-4e12-bea5-5b1e4ddb1b2d

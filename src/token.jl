@@ -4,15 +4,15 @@ abstract type Token end
 Base.broadcastable(t::Token) = Ref(t)
 Base.eltype(::Type{T}) where T<:Token = T # RecursiveArrayTools relies on this to give the correct element type of ArrayPartition()?
 
-struct ScalarToken <: Token
-    s::Symbol
+struct ScalarToken{S} <: Token
+    symbol::S
 end
 
 terms(t::ScalarToken) = (t=>1,)
 
-Base.show(io::IO, ::MIME"text/plain", t::ScalarToken) = print(io, t.s)
+Base.show(io::IO, ::MIME"text/plain", t::ScalarToken) = print(io, t.symbol)
 
-symbol(t::ScalarToken) = t.s
+symbol(t::ScalarToken) = t.symbol
 
 struct IndexedToken{T<:Token,D} <: Token
     t::T
@@ -20,7 +20,7 @@ struct IndexedToken{T<:Token,D} <: Token
 end
 
 IndexedToken(t::Token, I...) = IndexedToken{typeof(t),length(I)}(t,I)
-IndexedToken(s::Symbol, I...) = IndexedToken(ScalarToken(s),I...)
+IndexedToken(s, I...) = IndexedToken(ScalarToken(s), I...)
 
 index(t::IndexedToken) = t.I
 terms(t::IndexedToken) = (t=>1,)
