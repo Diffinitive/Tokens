@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.36
+# v1.1.0
 
 using Markdown
 using InteractiveUtils
@@ -476,7 +476,7 @@ PlutoUI.TableOfContents()
 # ╟─4dd70d83-36d2-459c-a4a4-90c274689325
 # ╟─44770c58-b36a-46d0-b599-0321cfcf24bf
 # ╠═f2d6f6e9-17c1-4fd6-b90b-c0f749ebd327
-# ╟─86976067-abcf-430a-bf79-7bdbaf510154
+# ╠═86976067-abcf-430a-bf79-7bdbaf510154
 # ╟─0a3f2fe9-b987-4628-897d-13858dcbc344
 # ╠═de05a6cf-9742-4240-9b8c-ff6ee8f077b9
 # ╠═dcdbeeb4-817a-4136-a3e8-27a2d71b4b07

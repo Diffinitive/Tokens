@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.36
+# v1.1.0
 
 using Markdown
 using InteractiveUtils
@@ -77,7 +77,15 @@ to_matrix(vₓ, 10)
 to_matrix(v->D1(v,1), 12)
 
 # ╔═╡ a8df7b1f-2f25-4f95-8630-49a3383d63cc
+let
+	v = ArrayToken(:v,10)
+	isbits(eltype(v))
+	eltype(v)
+	# reinterpret(reshape, NTuple{2,eltype(v)}, v)
+end
 
+# ╔═╡ d5f40270-521d-4e12-bea5-5b1e4ddb1b2d
+isbits(:s)
 
 # ╔═╡ Cell order:
 # ╠═c9fe44ec-49d4-11eb-023a-2d887e9efdc5
@@ -98,3 +106,4 @@ to_matrix(v->D1(v,1), 12)
 # ╠═b7d06580-ea6f-4927-946d-a6ddf9e912f1
 # ╠═bf841c82-49c8-11eb-14a9-69253453f68f
 # ╠═a8df7b1f-2f25-4f95-8630-49a3383d63cc
+# ╠═d5f40270-521d-4e12-bea5-5b1e4ddb1b2d
