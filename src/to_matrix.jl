@@ -1,11 +1,10 @@
 function to_matrix(f, n, m=n)
     v = ArrayToken('v', m)
     w = f(v)
-    return _to_matrix(w, n, m)
+    return to_matrix(w, n, m)
 end
 
-# To simplify writing of tests
-function _to_matrix(v::AbstractArray{<:Token}, n, m)
+function to_matrix(v::AbstractArray{<:Token}, n, m=n)
     I = Int[]
     J = Int[]
 

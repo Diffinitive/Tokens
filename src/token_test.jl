@@ -1,6 +1,5 @@
 using Test
 using Tokens
-using Tokens: _to_matrix
 using SparseArrays
 
 @testset "ScalarToken" begin

@@ -21,7 +21,7 @@ v = ArrayToken('v', N);
 vₓ = D1(v,1)
 
 res_func_application = @benchmark D1($v)
-res_matrix_conversion = @benchmark Tokens._to_matrix($vₓ, N, N)
+res_matrix_conversion = @benchmark Tokens.to_matrix($vₓ, N, N)
 
 println()
 println("Function application:")
