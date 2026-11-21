@@ -25,6 +25,32 @@ using SparseArrays
     end
 end
 
+@testset "Token and array arithmetic" begin
+    a = ScalarToken('a')
+    b = ScalarToken('b')
+    A = [2 -3; 0 4]
+    @test a * A == [2a -3a; 0a 4a]
+    @test A * a == [2a -3a; 0a 4a]
+
+    t = a + b
+    v = [1//2, -2//1]
+    @test t * v == [1//2*(a+b), -2//1*(a+b)]
+    @test v * t == [1//2*(a+b), -2//1*(a+b)]
+end
+
+@testset "Token division by a number" begin
+    a = ScalarToken('a')
+    @test a / 2 == 0.5a
+    @test 2 \ a == 0.5a
+
+    v = IndexedToken('v', 1)
+    @test v / (2//3) == 3//2*v
+    @test (2//3) \ v == 3//2*v
+
+    @test (a + v) / (2//3) == 3//2*a + 3//2*v
+    @test (2//3) \ (a + v) == 3//2*a + 3//2*v
+end
+
 @testset "ArrayToken" begin
     A = ArrayToken('A', 3, 3)
     @test A isa AbstractArray{IndexedToken{ScalarToken{Char},2}, 2}

@@ -14,6 +14,9 @@ Base.show(io::IO, ::MIME"text/plain", t::ScalarToken) = print(io, t.symbol)
 
 symbol(t::ScalarToken) = t.symbol
 
+Base.:*(t::Token, A::AbstractArray) = t.*A
+Base.:*(A::AbstractArray, t::Token) = A.*t
+
 struct IndexedToken{T<:Token,D} <: Token
     t::T
     I::NTuple{D,Int}
@@ -120,6 +123,8 @@ end
 
 Base.:*(λ::Number, t::Token) = LinearCombination(Dict(t=>λ))
 Base.:*(t::Token, λ::Number) = Base.:*(λ,t)
+Base.:/(t::Token, λ::Number) = inv(λ)*t
+Base.:\(λ::Number, t::Token) = inv(λ)*t
 Base.:-(t::Token) = -1*t
 
 function Base.:+(lc1::LinearCombination, lc2::LinearCombination)
