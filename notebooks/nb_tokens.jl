@@ -19,10 +19,10 @@ end
 using StaticArrays
 
 # ╔═╡ 0c89070c-3de6-11eb-2399-d108ce5e2d47
-IndexedToken(:a,(1,2))
+IndexedToken('a', 1, 2)
 
 # ╔═╡ b893d32a-3de5-11eb-3683-f3ed39735bc7
-a = ArrayToken(:a, 3)
+a = ArrayToken('a', 3)
 
 # ╔═╡ 556f849e-3de8-11eb-355a-e3a8f9d6ce41
 a[1]
@@ -31,16 +31,16 @@ a[1]
 dump(a[1])
 
 # ╔═╡ 9ca7110c-3de7-11eb-201f-113c61f2e00b
-ArrayToken(:a, 3,2)
+ArrayToken('a', 3,2)
 
 # ╔═╡ e5d088b8-49d1-11eb-0a86-294e136b23fe
 -a
 
 # ╔═╡ d7e8237a-3dec-11eb-23bd-75df6d454f9c
-x = ScalarToken(:x)
+x = ScalarToken('x')
 
 # ╔═╡ e63e5744-3dec-11eb-3129-d187918866da
-y = ScalarToken(:y)
+y = ScalarToken('y')
 
 # ╔═╡ 668f4ccc-91dc-46fe-bf73-113a6d479055
 -x
@@ -52,7 +52,7 @@ z = x+2*y
 dump(z)
 
 # ╔═╡ 490a50ac-49c9-11eb-0a62-fb39771c8b84
-v = ArrayToken(:v, 10)
+v = ArrayToken('v', 10)
 
 # ╔═╡ bf841c82-49c8-11eb-14a9-69253453f68f
 function D1(v, h)
@@ -83,18 +83,8 @@ to_matrix(v->D1(v,1), 12)
 let
 	v = ArrayToken('v',2,5)
 	isbitstype(eltype(v))
-	# eltype(v)
 	V = reinterpret(reshape, SVector{2,eltype(v)}, v)
-
-	collect(V)
-	# reinterpret(reshape, eltype(v), V)
 end
-
-# ╔═╡ 03e40fbd-1f46-4f61-a4d9-a89682170b75
-ArrayToken('v', 10)
-
-# ╔═╡ d5f40270-521d-4e12-bea5-5b1e4ddb1b2d
-isbits('a')
 
 # ╔═╡ Cell order:
 # ╠═c9fe44ec-49d4-11eb-023a-2d887e9efdc5
@@ -116,5 +106,3 @@ isbits('a')
 # ╠═bf841c82-49c8-11eb-14a9-69253453f68f
 # ╠═a8df7b1f-2f25-4f95-8630-49a3383d63cc
 # ╠═dd8f256e-7eac-4e99-a828-c88ebdab34ec
-# ╠═03e40fbd-1f46-4f61-a4d9-a89682170b75
-# ╠═d5f40270-521d-4e12-bea5-5b1e4ddb1b2d

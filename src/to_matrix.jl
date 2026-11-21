@@ -1,5 +1,5 @@
 function to_matrix(f, n, m=n)
-    v = ArrayToken(:v, m)
+    v = ArrayToken('v', m)
     w = f(v)
     return _to_matrix(w, n, m)
 end
