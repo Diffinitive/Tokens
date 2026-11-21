@@ -1517,10 +1517,10 @@ version = "0.3.10"
     Tracker = "9f7883ad-71c0-57eb-9f7f-b5c9e6d3789c"
 
 [[deps.TupleTools]]
-git-tree-sha1 = "a1c7e924f746f0ebc792425e7d4d2ea5b4470697"
+git-tree-sha1 = "e73ec1116bf18dafa2ebeb63876b880920dc5eaf"
 registries = "General"
 uuid = "9d95972d-f1c8-5527-a6e0-b4b365fa01f6"
-version = "1.6.1"
+version = "1.6.2"
 
 [[deps.UUIDs]]
 deps = ["Random", "SHA"]

@@ -16,11 +16,12 @@ function D1(v, h=1)
     return vₓ
 end
 
-v = ArrayToken(:v, 4000);
+N = 4000
+v = ArrayToken('v', N);
 vₓ = D1(v,1)
 
 res_func_application = @benchmark D1($v)
-res_matrix_conversion = @benchmark to_matrix($vₓ)
+res_matrix_conversion = @benchmark Tokens._to_matrix($vₓ, N, N)
 
 println()
 println("Function application:")
