@@ -1,10 +1,10 @@
-function to_matrix(f, n, m=n)
+function to_matrix(f, n::Int, m::Int=n)
     v = ArrayToken('v', m)
     w = f(v)
     return to_matrix(w, n, m)
 end
 
-function to_matrix(v::AbstractArray{<:Token}, n, m=n)
+function to_matrix(v::AbstractArray{<:Token}, n::Int, m::Int=n)
     I = Int[]
     J = Int[]
 
@@ -28,7 +28,7 @@ function to_matrix(v::AbstractArray{<:Token}, n, m=n)
     return sparse(I, J, V, n, m)
 end
 
-function to_tensor(v, range_dim, domain_dim)
+function to_tensor(v, range_dim::NTuple{N,Int} where N, domain_dim::NTuple{N,Int} where N)
     T = weighttype(eltype(v))
     A = SparseArray{T}(undef, range_dim..., domain_dim...)
 

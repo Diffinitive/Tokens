@@ -22,8 +22,8 @@ struct IndexedToken{T<:Token,D} <: Token
     I::NTuple{D,Int}
 end
 
-IndexedToken(t::Token, I...) = IndexedToken{typeof(t),length(I)}(t,I)
-IndexedToken(s, I...) = IndexedToken(ScalarToken(s), I...)
+IndexedToken(t::Token, I::Vararg{Int}) = IndexedToken{typeof(t),length(I)}(t,I)
+IndexedToken(s, I::Vararg{Int}) = IndexedToken(ScalarToken(s), I...)
 
 index(t::IndexedToken) = t.I
 terms(t::IndexedToken) = (t=>1,)
@@ -43,7 +43,7 @@ end
 
 symbol(t::ArrayToken) = symbol(t.s)
 
-ArrayToken(s, sz...) = ArrayToken(ScalarToken(s), sz)
+ArrayToken(s, sz::Vararg{Int}) = ArrayToken(ScalarToken(s), sz)
 
 Base.size(a::ArrayToken) = a.size
 
